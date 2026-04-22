@@ -1,0 +1,1090 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Green Man 2025</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --forest:    #0f1f0f;
+    --bark:      #1e2f1a;
+    --moss:      #2d4a27;
+    --amber:     #c8933a;
+    --amber-dim: #8a6025;
+    --cream:     #f5f0e8;
+    --mist:      #b8c4a8;
+    --must:      #e8a020;
+    --want:      #7ab648;
+    --maybe:     #5b8fc4;
+    --nope:      #666;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--forest);
+    color: var(--cream);
+    height: 100dvh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 9999;
+    opacity: 0.4;
+  }
+
+  header {
+    padding: 16px 20px 12px;
+    background: linear-gradient(180deg, var(--forest) 0%, transparent 100%);
+    flex-shrink: 0;
+    position: relative;
+    z-index: 10;
+  }
+
+  .header-top {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    margin-bottom: 14px;
+  }
+
+  h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 26px;
+    font-weight: 700;
+    color: var(--cream);
+    line-height: 1;
+  }
+
+  h1 span { color: var(--amber); font-style: italic; font-weight: 400; }
+
+  .festival-dates {
+    font-size: 11px;
+    color: var(--mist);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .day-tabs {
+    display: flex;
+    gap: 6px;
+    overflow-x: auto;
+    scrollbar-width: none;
+    padding-bottom: 2px;
+  }
+  .day-tabs::-webkit-scrollbar { display: none; }
+
+  .day-tab {
+    flex-shrink: 0;
+    padding: 6px 14px;
+    border-radius: 20px;
+    border: 1px solid var(--moss);
+    background: transparent;
+    color: var(--mist);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .day-tab.active {
+    background: var(--amber);
+    border-color: var(--amber);
+    color: var(--forest);
+    font-weight: 500;
+  }
+
+  .stage-filter-row {
+    padding: 10px 20px 0;
+    display: flex;
+    gap: 6px;
+    overflow-x: auto;
+    scrollbar-width: none;
+    flex-shrink: 0;
+  }
+  .stage-filter-row::-webkit-scrollbar { display: none; }
+
+  .stage-pill {
+    flex-shrink: 0;
+    padding: 4px 12px;
+    border-radius: 20px;
+    border: 1px solid rgba(200,147,58,0.3);
+    background: transparent;
+    color: var(--mist);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .stage-pill.active {
+    background: rgba(200,147,58,0.15);
+    border-color: var(--amber);
+    color: var(--amber);
+  }
+
+  .act-list {
+    flex: 1;
+    overflow-y: auto;
+    padding: 12px 16px 90px;
+    scrollbar-width: none;
+  }
+  .act-list::-webkit-scrollbar { display: none; }
+
+  .time-block-header {
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--amber-dim);
+    padding: 16px 4px 8px;
+    font-weight: 500;
+  }
+
+  .act-card {
+    border-radius: 12px;
+    overflow: hidden;
+    margin-bottom: 10px;
+    position: relative;
+    min-height: 90px;
+    display: flex;
+    align-items: flex-end;
+    cursor: pointer;
+    transition: transform 0.15s;
+    background: var(--bark);
+  }
+
+  .act-card:active { transform: scale(0.98); }
+
+  .act-card-bg {
+    position: absolute;
+    inset: 0;
+    background-size: cover;
+    background-position: center top;
+    transition: opacity 0.5s ease;
+  }
+
+  .act-card::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom, rgba(10,20,10,0.1) 0%, rgba(10,20,10,0.7) 60%, rgba(10,20,10,0.9) 100%);
+    border-radius: 12px;
+  }
+
+  .act-card-content {
+    position: relative;
+    z-index: 2;
+    padding: 12px 14px;
+    width: 100%;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 10px;
+  }
+
+  .act-info { flex: 1; min-width: 0; }
+
+  .act-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--cream);
+    line-height: 1.2;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .act-meta {
+    font-size: 12px;
+    color: var(--mist);
+    margin-top: 3px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .act-meta .dot { color: var(--amber-dim); }
+
+  .rating-widget {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    flex-shrink: 0;
+  }
+
+  .rating-dots { display: flex; gap: 4px; }
+
+  .rating-btn {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    border: 2px solid rgba(255,255,255,0.2);
+    background: rgba(0,0,0,0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.15s;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .rating-btn:active { transform: scale(1.2); }
+
+  .act-card[data-rating="3"] .rating-btn[data-r="3"] { background: var(--must); border-color: var(--must); }
+  .act-card[data-rating="2"] .rating-btn[data-r="2"] { background: var(--want); border-color: var(--want); }
+  .act-card[data-rating="1"] .rating-btn[data-r="1"] { background: var(--maybe); border-color: var(--maybe); }
+  .act-card[data-rating="0"] .rating-btn[data-r="0"] { background: var(--nope); border-color: var(--nope); }
+
+  .act-card[data-rating="3"] { box-shadow: 0 0 0 2px var(--must); }
+  .act-card[data-rating="2"] { box-shadow: 0 0 0 2px var(--want); }
+  .act-card[data-rating="1"] { box-shadow: 0 0 0 2px var(--maybe); }
+  .act-card[data-rating="0"] { opacity: 0.45; }
+
+  .rating-label { font-size: 10px; color: var(--mist); letter-spacing: 0.05em; }
+
+  /* ── Bottom nav ── */
+  nav {
+    position: fixed;
+    bottom: 0;
+    left: 0; right: 0;
+    background: linear-gradient(0deg, var(--forest) 80%, transparent);
+    padding: 10px 0 20px;
+    display: flex;
+    justify-content: space-around;
+    z-index: 100;
+  }
+
+  .nav-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    background: none;
+    border: none;
+    color: var(--mist);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 11px;
+    cursor: pointer;
+    padding: 6px 16px;
+    border-radius: 12px;
+    transition: color 0.2s;
+  }
+
+  .nav-btn.active { color: var(--amber); }
+  .nav-icon { font-size: 22px; line-height: 1; }
+
+  .empty-state { text-align: center; padding: 60px 30px; color: var(--mist); }
+  .empty-state .icon { font-size: 48px; margin-bottom: 12px; }
+  .empty-state p { font-size: 14px; line-height: 1.6; }
+
+  /* ══════════════════════════════════════
+     NOW & NEXT — SWIPE CAROUSEL
+  ══════════════════════════════════════ */
+  #view-now {
+    display: none;
+    flex-direction: column;
+    height: 100dvh;
+    overflow: hidden;
+  }
+
+  .stage-dots {
+    display: flex;
+    gap: 8px;
+    padding: 0 4px 4px;
+  }
+
+  .stage-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--moss);
+    transition: all 0.3s;
+  }
+  .stage-dot.active {
+    background: var(--amber);
+    width: 20px;
+    border-radius: 3px;
+  }
+
+  .stage-carousel {
+    flex: 1;
+    display: flex;
+    overflow: hidden;
+    position: relative;
+    touch-action: pan-y;
+  }
+
+  .stage-slide {
+    flex: 0 0 100%;
+    height: 100%;
+    padding: 8px 16px 90px;
+    overflow-y: auto;
+    scrollbar-width: none;
+    transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .stage-slide::-webkit-scrollbar { display: none; }
+
+  /* Stage name banner */
+  .stage-banner {
+    font-family: 'Playfair Display', serif;
+    font-size: 13px;
+    font-style: italic;
+    color: var(--amber);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+    padding-left: 2px;
+  }
+
+  /* Now/Next slot cards */
+  .slot-card {
+    border-radius: 16px;
+    overflow: hidden;
+    position: relative;
+    margin-bottom: 12px;
+    background: var(--bark);
+    min-height: 160px;
+    display: flex;
+    align-items: flex-end;
+  }
+
+  .slot-card-bg {
+    position: absolute;
+    inset: 0;
+    background-size: cover;
+    background-position: center top;
+  }
+
+  .slot-card::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom, rgba(8,16,8,0.05) 0%, rgba(8,16,8,0.75) 55%, rgba(8,16,8,0.95) 100%);
+  }
+
+  .slot-label {
+    position: absolute;
+    top: 14px; left: 14px;
+    z-index: 3;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    border-radius: 6px;
+  }
+
+  .slot-label.now {
+    background: var(--amber);
+    color: var(--forest);
+  }
+
+  .slot-label.next {
+    background: rgba(255,255,255,0.12);
+    color: var(--cream);
+    backdrop-filter: blur(6px);
+    border: 1px solid rgba(255,255,255,0.15);
+  }
+
+  .slot-content {
+    position: relative;
+    z-index: 2;
+    padding: 14px 16px;
+    width: 100%;
+  }
+
+  .slot-artist {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--cream);
+    line-height: 1.2;
+    margin-bottom: 6px;
+  }
+
+  .slot-meta {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    color: var(--mist);
+  }
+
+  .slot-timer {
+    font-size: 12px;
+    color: var(--amber);
+    font-weight: 500;
+  }
+
+  .rating-pip {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    display: inline-block;
+    flex-shrink: 0;
+  }
+  .pip-3 { background: var(--must); }
+  .pip-2 { background: var(--want); }
+  .pip-1 { background: var(--maybe); }
+
+  .slot-nothing {
+    min-height: 120px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 16px;
+    border: 1px dashed var(--moss);
+    margin-bottom: 12px;
+  }
+
+  .slot-nothing p {
+    font-size: 13px;
+    color: var(--mist);
+    font-style: italic;
+  }
+
+  .swipe-hint {
+    text-align: center;
+    font-size: 11px;
+    color: var(--moss);
+    padding: 6px 0;
+    letter-spacing: 0.05em;
+  }
+
+  /* ══════════════════════════════════════
+     MY PICKS VIEW
+  ══════════════════════════════════════ */
+  #view-picks {
+    display: none;
+    flex-direction: column;
+    height: 100dvh;
+    overflow: hidden;
+  }
+
+  .picks-day-header {
+    font-family: 'Playfair Display', serif;
+    font-size: 18px;
+    font-style: italic;
+    color: var(--amber);
+    padding: 16px 4px 10px;
+    border-bottom: 1px solid var(--moss);
+    margin-bottom: 10px;
+  }
+
+  .picks-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 8px;
+    border-radius: 10px;
+    margin-bottom: 6px;
+    background: rgba(30,47,26,0.5);
+    position: relative;
+  }
+
+  .picks-row.clash { border-left: 3px solid #e05a5a; }
+
+  .picks-time {
+    font-size: 12px;
+    color: var(--mist);
+    min-width: 42px;
+    text-align: right;
+    flex-shrink: 0;
+  }
+
+  .picks-artist {
+    font-family: 'Playfair Display', serif;
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--cream);
+    flex: 1;
+    min-width: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .picks-stage { font-size: 11px; color: var(--mist); flex-shrink: 0; }
+
+  .clash-label {
+    position: absolute;
+    right: 8px; top: 4px;
+    font-size: 10px;
+    color: #e05a5a;
+    letter-spacing: 0.05em;
+  }
+
+  .no-picks {
+    text-align: center;
+    padding: 50px 30px;
+    color: var(--mist);
+    font-size: 14px;
+    line-height: 1.7;
+  }
+</style>
+</head>
+<body>
+
+<!-- ══════════════ BROWSE VIEW ══════════════ -->
+<div id="view-browse">
+  <header>
+    <div class="header-top">
+      <h1>Green <span>Man</span></h1>
+      <span class="festival-dates">14–17 Aug 2025</span>
+    </div>
+    <div class="day-tabs" id="day-tabs">
+      <button class="day-tab active" data-day="2025-08-14">Thurs</button>
+      <button class="day-tab" data-day="2025-08-15">Fri</button>
+      <button class="day-tab" data-day="2025-08-16">Sat</button>
+      <button class="day-tab" data-day="2025-08-17">Sun</button>
+    </div>
+  </header>
+  <div class="stage-filter-row" id="stage-pills"></div>
+  <div class="act-list" id="act-list"></div>
+</div>
+
+<!-- ══════════════ NOW & NEXT VIEW ══════════════ -->
+<div id="view-now">
+  <header>
+    <div class="header-top">
+      <h1>Now <span>& Next</span></h1>
+    </div>
+    <div class="stage-dots" id="stage-dots">
+      <span class="stage-dot active"></span>
+      <span class="stage-dot"></span>
+      <span class="stage-dot"></span>
+    </div>
+  </header>
+  <div class="stage-carousel" id="stage-carousel">
+    <div class="stage-slide" id="slide-0"></div>
+    <div class="stage-slide" id="slide-1"></div>
+    <div class="stage-slide" id="slide-2"></div>
+  </div>
+</div>
+
+<!-- ══════════════ PICKS VIEW ══════════════ -->
+<div id="view-picks">
+  <header>
+    <div class="header-top">
+      <h1>My <span>Picks</span></h1>
+    </div>
+  </header>
+  <div class="act-list" id="picks-list"></div>
+</div>
+
+<!-- ══════════════ BOTTOM NAV ══════════════ -->
+<nav>
+  <button class="nav-btn active" data-view="browse" onclick="switchView('browse')">
+    <span class="nav-icon">🎵</span>Browse
+  </button>
+  <button class="nav-btn" data-view="now" onclick="switchView('now')">
+    <span class="nav-icon">🟢</span>Now & Next
+  </button>
+  <button class="nav-btn" data-view="picks" onclick="switchView('picks')">
+    <span class="nav-icon">⭐</span>My Picks
+  </button>
+</nav>
+
+<script>
+// ══════════════════════════════════════════════════════
+// !! LAST.FM API KEY — paste your key between the quotes
+// Get a free key at: https://www.last.fm/api/account/create
+// ══════════════════════════════════════════════════════
+const LASTFM_API_KEY = '';
+// ══════════════════════════════════════════════════════
+
+// ── Dev mode: simulates being at the festival ─────────
+// Set DEV_MODE to false when using at the actual festival
+const DEV_MODE = true;
+const DEV_TIME = '2025-08-15T19:00:00'; // Friday evening
+
+function getNow() {
+  return DEV_MODE ? new Date(DEV_TIME) : new Date();
+}
+// ─────────────────────────────────────────────────────
+
+const FESTIVAL_DATA = {"festival":"Green Man Festival 2025","dates":{"thursday":"2025-08-14","friday":"2025-08-15","saturday":"2025-08-16","sunday":"2025-08-17"},"stages":["Mountain Stage","Far Out","Walled Garden","Rising","Chai Wallahs","Round The Twist","Babbling Tongues","Cinedrome","Wishbone","Rough Trade tent signings"],"acts":[{"stage":"Far Out","day":"2025-08-14","start":"2025-08-14T16:45:00","end":"2025-08-14T17:30:00","artist":"Heartworms"},{"stage":"Far Out","day":"2025-08-14","start":"2025-08-14T18:00:00","end":"2025-08-14T18:45:00","artist":"W.H. Lung"},{"stage":"Far Out","day":"2025-08-14","start":"2025-08-14T19:30:00","end":"2025-08-14T20:15:00","artist":"Adwaith"},{"stage":"Far Out","day":"2025-08-14","start":"2025-08-14T21:00:00","end":"2025-08-14T21:45:00","artist":"Gurriers"},{"stage":"Far Out","day":"2025-08-14","start":"2025-08-14T22:30:00","end":"2025-08-14T23:45:00","artist":"Kneecap"},{"stage":"Far Out","day":"2025-08-14","start":"2025-08-15T00:15:00","end":"2025-08-15T01:30:00","artist":"Factory Floor"},{"stage":"Walled Garden","day":"2025-08-14","start":"2025-08-14T17:15:00","end":"2025-08-14T18:00:00","artist":"Peiriant"},{"stage":"Walled Garden","day":"2025-08-14","start":"2025-08-14T18:30:00","end":"2025-08-14T19:15:00","artist":"Nancy Williams"},{"stage":"Walled Garden","day":"2025-08-14","start":"2025-08-14T19:45:00","end":"2025-08-14T20:30:00","artist":"Midding"},{"stage":"Walled Garden","day":"2025-08-14","start":"2025-08-14T21:15:00","end":"2025-08-14T22:15:00","artist":"Tristwch Y Fenywod"},{"stage":"Walled Garden","day":"2025-08-14","start":"2025-08-14T22:45:00","end":"2025-08-14T23:45:00","artist":"Georgia Ruth"},{"stage":"Chai Wallahs","day":"2025-08-14","start":"2025-08-14T13:00:00","end":"2025-08-14T17:00:00","artist":"Diplomats Of Sound DJs"},{"stage":"Chai Wallahs","day":"2025-08-14","start":"2025-08-14T17:00:00","end":"2025-08-14T18:00:00","artist":"Gringo Ska"},{"stage":"Chai Wallahs","day":"2025-08-14","start":"2025-08-14T18:30:00","end":"2025-08-14T19:30:00","artist":"The Wran"},{"stage":"Chai Wallahs","day":"2025-08-14","start":"2025-08-14T20:00:00","end":"2025-08-14T21:00:00","artist":"Madly"},{"stage":"Chai Wallahs","day":"2025-08-14","start":"2025-08-14T21:30:00","end":"2025-08-14T22:30:00","artist":"She's Got Brass"},{"stage":"Chai Wallahs","day":"2025-08-14","start":"2025-08-14T23:00:00","end":"2025-08-15T00:00:00","artist":"Stone Cold Hustle"},{"stage":"Chai Wallahs","day":"2025-08-14","start":"2025-08-15T00:15:00","end":"2025-08-15T02:00:00","artist":"The Allergies (DJ)"},{"stage":"Round The Twist","day":"2025-08-14","start":"2025-08-14T20:00:00","end":"2025-08-14T21:30:00","artist":"James Endeacott b2b Heavenly Jukebox"},{"stage":"Round The Twist","day":"2025-08-14","start":"2025-08-14T21:30:00","end":"2025-08-14T22:30:00","artist":"Numero Group"},{"stage":"Round The Twist","day":"2025-08-14","start":"2025-08-14T22:30:00","end":"2025-08-14T23:30:00","artist":"Pet Deaths Disco b2b Bella Unwin"},{"stage":"Round The Twist","day":"2025-08-14","start":"2025-08-14T23:30:00","end":"2025-08-15T00:30:00","artist":"Convulse! DJs"},{"stage":"Round The Twist","day":"2025-08-14","start":"2025-08-15T00:30:00","end":"2025-08-15T01:30:00","artist":"The Social Soundsystem"},{"stage":"Round The Twist","day":"2025-08-14","start":"2025-08-15T01:30:00","end":"2025-08-15T03:00:00","artist":"Ros Atkins' Rave Machine"},{"stage":"Cinedrome","day":"2025-08-14","start":"2025-08-14T14:00:00","end":"2025-08-14T16:00:00","artist":"NT Live: Dr Strangelove"},{"stage":"Cinedrome","day":"2025-08-14","start":"2025-08-14T16:30:00","end":"2025-08-14T18:00:00","artist":"Dawn of Impressionism"},{"stage":"Cinedrome","day":"2025-08-14","start":"2025-08-14T19:00:00","end":"2025-08-14T21:00:00","artist":"Tornado introduced by John McLean"},{"stage":"Cinedrome","day":"2025-08-14","start":"2025-08-14T21:00:00","end":"2025-08-14T22:40:00","artist":"Still Pushing Pineapples"},{"stage":"Cinedrome","day":"2025-08-14","start":"2025-08-14T22:40:00","end":"2025-08-15T00:30:00","artist":"Sister Midnight"},{"stage":"Cinedrome","day":"2025-08-14","start":"2025-08-15T00:30:00","end":"2025-08-15T02:15:00","artist":"Human Traffic"},{"stage":"Wishbone","day":"2025-08-14","start":"2025-08-14T21:15:00","end":"2025-08-14T21:30:00","artist":"Drag Aerobics"},{"stage":"Wishbone","day":"2025-08-14","start":"2025-08-14T21:30:00","end":"2025-08-14T22:45:00","artist":"The Bandaoke Show"},{"stage":"Wishbone","day":"2025-08-14","start":"2025-08-14T23:00:00","end":"2025-08-15T00:00:00","artist":"Slipped Disco"},{"stage":"Wishbone","day":"2025-08-14","start":"2025-08-15T00:15:00","end":"2025-08-15T01:15:00","artist":"Cabaret Sauvignon"},{"stage":"Wishbone","day":"2025-08-14","start":"2025-08-15T01:15:00","end":"2025-08-15T03:00:00","artist":"Floor Tile"},{"stage":"Rough Trade tent signings","day":"2025-08-14","start":"2025-08-14T16:00:00","end":"2025-08-14T16:30:00","artist":"Tristwch y Fenywod"},{"stage":"Rough Trade tent signings","day":"2025-08-14","start":"2025-08-14T18:30:00","end":"2025-08-14T19:00:00","artist":"Heartworms"},{"stage":"Mountain Stage","day":"2025-08-15","start":"2025-08-15T11:45:00","end":"2025-08-15T12:15:00","artist":"wing!"},{"stage":"Mountain Stage","day":"2025-08-15","start":"2025-08-15T12:45:00","end":"2025-08-15T13:30:00","artist":"The Joy"},{"stage":"Mountain Stage","day":"2025-08-15","start":"2025-08-15T14:00:00","end":"2025-08-15T14:50:00","artist":"Ishmael Ensemble"},{"stage":"Mountain Stage","day":"2025-08-15","start":"2025-08-15T15:35:00","end":"2025-08-15T16:35:00","artist":"Annie & The Caldwells"},{"stage":"Mountain Stage","day":"2025-08-15","start":"2025-08-15T17:20:00","end":"2025-08-15T18:20:00","artist":"BC Camplight (secret set, billed as 'surprise')"},{"stage":"Mountain Stage","day":"2025-08-15","start":"2025-08-15T19:05:00","end":"2025-08-15T20:15:00","artist":"John Grant"},{"stage":"Mountain Stage","day":"2025-08-15","start":"2025-08-15T21:00:00","end":"2025-08-15T22:15:00","artist":"Wunderhorse"},{"stage":"Mountain Stage","day":"2025-08-15","start":"2025-08-15T23:00:00","end":"2025-08-16T00:15:00","artist":"Wet Leg"},{"stage":"Far Out","day":"2025-08-15","start":"2025-08-15T12:00:00","end":"2025-08-15T12:45:00","artist":"Delivery"},{"stage":"Far Out","day":"2025-08-15","start":"2025-08-15T13:15:00","end":"2025-08-15T14:00:00","artist":"Horse Jumper Of Love"},{"stage":"Far Out","day":"2025-08-15","start":"2025-08-15T14:30:00","end":"2025-08-15T15:30:00","artist":"Ditz"},{"stage":"Far Out","day":"2025-08-15","start":"2025-08-15T16:00:00","end":"2025-08-15T17:00:00","artist":"Pissed Jeans"},{"stage":"Far Out","day":"2025-08-15","start":"2025-08-15T17:45:00","end":"2025-08-15T18:45:00","artist":"Mike"},{"stage":"Far Out","day":"2025-08-15","start":"2025-08-15T19:30:00","end":"2025-08-15T20:30:00","artist":"Los Campesinos!"},{"stage":"Far Out","day":"2025-08-15","start":"2025-08-15T21:15:00","end":"2025-08-15T22:15:00","artist":"Panda Bear"},{"stage":"Far Out","day":"2025-08-15","start":"2025-08-15T23:00:00","end":"2025-08-16T00:00:00","artist":"Greentea Peng"},{"stage":"Far Out","day":"2025-08-15","start":"2025-08-16T00:15:00","end":"2025-08-16T02:15:00","artist":"Dove"},{"stage":"Far Out","day":"2025-08-15","start":"2025-08-16T02:15:00","end":"2025-08-16T03:30:00","artist":"Icemorph"},{"stage":"Walled Garden","day":"2025-08-15","start":"2025-08-15T11:45:00","end":"2025-08-15T12:30:00","artist":"Pys Melyn"},{"stage":"Walled Garden","day":"2025-08-15","start":"2025-08-15T13:00:00","end":"2025-08-15T13:45:00","artist":"Robin Kester"},{"stage":"Walled Garden","day":"2025-08-15","start":"2025-08-15T14:15:00","end":"2025-08-15T15:00:00","artist":"Jacob Alon"},{"stage":"Walled Garden","day":"2025-08-15","start":"2025-08-15T15:30:00","end":"2025-08-15T16:15:00","artist":"Sex Week"},{"stage":"Walled Garden","day":"2025-08-15","start":"2025-08-15T17:00:00","end":"2025-08-15T18:00:00","artist":"Greg Mendez"},{"stage":"Walled Garden","day":"2025-08-15","start":"2025-08-15T18:30:00","end":"2025-08-15T19:30:00","artist":"Naima Bock"},{"stage":"Walled Garden","day":"2025-08-15","start":"2025-08-15T20:15:00","end":"2025-08-15T21:00:00","artist":"@"},{"stage":"Walled Garden","day":"2025-08-15","start":"2025-08-15T21:45:00","end":"2025-08-15T22:45:00","artist":"Nadia Reid"},{"stage":"Walled Garden","day":"2025-08-15","start":"2025-08-15T23:15:00","end":"2025-08-16T00:15:00","artist":"Alan Sparhawk"},{"stage":"Walled Garden","day":"2025-08-15","start":"2025-08-16T00:45:00","end":"2025-08-16T01:45:00","artist":"HiTech"},{"stage":"Walled Garden","day":"2025-08-15","start":"2025-08-16T02:00:00","end":"2025-08-16T03:00:00","artist":"PVA (DJ)"},{"stage":"Rising","day":"2025-08-15","start":"2025-08-15T11:15:00","end":"2025-08-15T11:45:00","artist":"A Lesser Version"},{"stage":"Rising","day":"2025-08-15","start":"2025-08-15T12:15:00","end":"2025-08-15T12:45:00","artist":"Shale"},{"stage":"Rising","day":"2025-08-15","start":"2025-08-15T13:30:00","end":"2025-08-15T14:00:00","artist":"Yuuf"},{"stage":"Rising","day":"2025-08-15","start":"2025-08-15T14:50:00","end":"2025-08-15T15:35:00","artist":"Alphabet"},{"stage":"Rising","day":"2025-08-15","start":"2025-08-15T16:35:00","end":"2025-08-15T17:20:00","artist":"Oreglo"},{"stage":"Rising","day":"2025-08-15","start":"2025-08-15T18:20:00","end":"2025-08-15T19:05:00","artist":"Keo"},{"stage":"Rising","day":"2025-08-15","start":"2025-08-15T20:15:00","end":"2025-08-15T21:00:00","artist":"Silver Gore"},{"stage":"Rising","day":"2025-08-15","start":"2025-08-15T22:15:00","end":"2025-08-15T23:00:00","artist":"Adult DVD"},{"stage":"Chai Wallahs","day":"2025-08-15","start":"2025-08-15T11:00:00","end":"2025-08-15T12:00:00","artist":"Singing With Seamas"},{"stage":"Chai Wallahs","day":"2025-08-15","start":"2025-08-15T12:00:00","end":"2025-08-15T13:30:00","artist":"Hibiscus, Rona Mac, Jessie Reid"},{"stage":"Chai Wallahs","day":"2025-08-15","start":"2025-08-15T13:30:00","end":"2025-08-15T14:30:00","artist":"Potter"},{"stage":"Chai Wallahs","day":"2025-08-15","start":"2025-08-15T15:00:00","end":"2025-08-15T16:00:00","artist":"True Strays"},{"stage":"Chai Wallahs","day":"2025-08-15","start":"2025-08-15T16:30:00","end":"2025-08-15T17:30:00","artist":"The Gulls"},{"stage":"Chai Wallahs","day":"2025-08-15","start":"2025-08-15T18:00:00","end":"2025-08-15T19:00:00","artist":"Stevie Toddler"},{"stage":"Chai Wallahs","day":"2025-08-15","start":"2025-08-15T19:00:00","end":"2025-08-15T21:00:00","artist":"Tricky Disco ft. Selectah Si Chai"},{"stage":"Chai Wallahs","day":"2025-08-15","start":"2025-08-15T21:00:00","end":"2025-08-15T22:00:00","artist":"Aziza Jaye"},{"stage":"Chai Wallahs","day":"2025-08-15","start":"2025-08-15T22:30:00","end":"2025-08-15T23:30:00","artist":"Suntou Susso"},{"stage":"Chai Wallahs","day":"2025-08-15","start":"2025-08-16T00:00:00","end":"2025-08-16T01:00:00","artist":"Broken Brass"},{"stage":"Chai Wallahs","day":"2025-08-15","start":"2025-08-16T01:15:00","end":"2025-08-16T04:00:00","artist":"DJ Hiphoppapotamus"},{"stage":"Round The Twist","day":"2025-08-15","start":"2025-08-15T19:30:00","end":"2025-08-15T19:50:00","artist":"The Worm"},{"stage":"Round The Twist","day":"2025-08-15","start":"2025-08-15T19:50:00","end":"2025-08-15T20:20:00","artist":"Donna Thompson"},{"stage":"Round The Twist","day":"2025-08-15","start":"2025-08-15T20:20:00","end":"2025-08-15T21:20:00","artist":"Bella Unwin DJ"},{"stage":"Round The Twist","day":"2025-08-15","start":"2025-08-15T21:20:00","end":"2025-08-15T22:00:00","artist":"Hiro Ama"},{"stage":"Round The Twist","day":"2025-08-15","start":"2025-08-15T22:00:00","end":"2025-08-15T23:00:00","artist":"Roadkill Ikebana DJ"},{"stage":"Round The Twist","day":"2025-08-15","start":"2025-08-15T23:00:00","end":"2025-08-15T23:30:00","artist":"Taliable"},{"stage":"Round The Twist","day":"2025-08-15","start":"2025-08-15T23:30:00","end":"2025-08-16T01:30:00","artist":"PRAH DJs"},{"stage":"Round The Twist","day":"2025-08-15","start":"2025-08-16T01:30:00","end":"2025-08-16T03:00:00","artist":"KD22LR"},{"stage":"Babbling Tongues","day":"2025-08-15","start":"2025-08-15T12:00:00","end":"2025-08-15T13:00:00","artist":"Pete Brown matches the beers to the bands"},{"stage":"Babbling Tongues","day":"2025-08-15","start":"2025-08-15T13:15:00","end":"2025-08-15T14:00:00","artist":"Rhun ap Iorwerth"},{"stage":"Babbling Tongues","day":"2025-08-15","start":"2025-08-15T14:15:00","end":"2025-08-15T15:00:00","artist":"New Welsh Writing"},{"stage":"Babbling Tongues","day":"2025-08-15","start":"2025-08-15T15:15:00","end":"2025-08-15T16:00:00","artist":"Music and Autism: John Harris w/Richard King"},{"stage":"Babbling Tongues","day":"2025-08-15","start":"2025-08-15T16:15:00","end":"2025-08-15T17:00:00","artist":"Tir - The Story of the Welsh Landscape"},{"stage":"Babbling Tongues","day":"2025-08-15","start":"2025-08-15T17:15:00","end":"2025-08-15T18:00:00","artist":"Charlotte Church - Dreaming On The Land"},{"stage":"Babbling Tongues","day":"2025-08-15","start":"2025-08-15T19:00:00","end":"2025-08-15T19:05:00","artist":"Daman Bamrah (MC)"},{"stage":"Babbling Tongues","day":"2025-08-15","start":"2025-08-15T19:05:00","end":"2025-08-15T19:50:00","artist":"Hedluv & Passman"},{"stage":"Babbling Tongues","day":"2025-08-15","start":"2025-08-15T19:55:00","end":"2025-08-15T20:15:00","artist":"Kate Cheka"},{"stage":"Babbling Tongues","day":"2025-08-15","start":"2025-08-15T20:20:00","end":"2025-08-15T20:40:00","artist":"Adam Flood"},{"stage":"Babbling Tongues","day":"2025-08-15","start":"2025-08-15T20:45:00","end":"2025-08-15T21:15:00","artist":"Spencer Jones"},{"stage":"Babbling Tongues","day":"2025-08-15","start":"2025-08-15T21:20:00","end":"2025-08-15T21:40:00","artist":"Anna Thomas"},{"stage":"Babbling Tongues","day":"2025-08-15","start":"2025-08-15T21:45:00","end":"2025-08-15T22:30:00","artist":"Tarot"},{"stage":"Babbling Tongues","day":"2025-08-15","start":"2025-08-15T22:30:00","end":"2025-08-15T22:35:00","artist":"Jarred Christmas (MC)"},{"stage":"Babbling Tongues","day":"2025-08-15","start":"2025-08-15T22:35:00","end":"2025-08-15T22:55:00","artist":"Paul Hilleard"},{"stage":"Babbling Tongues","day":"2025-08-15","start":"2025-08-15T23:00:00","end":"2025-08-15T23:20:00","artist":"Caitlin Powell"},{"stage":"Babbling Tongues","day":"2025-08-15","start":"2025-08-15T23:25:00","end":"2025-08-15T23:55:00","artist":"Paddy Young"},{"stage":"Babbling Tongues","day":"2025-08-15","start":"2025-08-16T00:00:00","end":"2025-08-16T00:10:00","artist":"Elaine Fellows"},{"stage":"Babbling Tongues","day":"2025-08-15","start":"2025-08-16T00:15:00","end":"2025-08-16T00:35:00","artist":"Horatio Gould"},{"stage":"Babbling Tongues","day":"2025-08-15","start":"2025-08-16T00:40:00","end":"2025-08-16T01:00:00","artist":"Lou Taylor"},{"stage":"Babbling Tongues","day":"2025-08-15","start":"2025-08-16T01:05:00","end":"2025-08-16T01:55:00","artist":"Beat This!"},{"stage":"Cinedrome","day":"2025-08-15","start":"2025-08-15T09:30:00","end":"2025-08-15T12:00:00","artist":"Flow & workshop"},{"stage":"Cinedrome","day":"2025-08-15","start":"2025-08-15T12:05:00","end":"2025-08-15T12:30:00","artist":"Pinc"},{"stage":"Cinedrome","day":"2025-08-15","start":"2025-08-15T12:35:00","end":"2025-08-15T13:20:00","artist":"Ffilm Cymru Shorts Panel"},{"stage":"Cinedrome","day":"2025-08-15","start":"2025-08-15T13:25:00","end":"2025-08-15T13:40:00","artist":"Mother's Day"},{"stage":"Cinedrome","day":"2025-08-15","start":"2025-08-15T14:00:00","end":"2025-08-15T15:30:00","artist":"I Am Martin Parr"},{"stage":"Cinedrome","day":"2025-08-15","start":"2025-08-15T15:45:00","end":"2025-08-15T17:00:00","artist":"Tall Tales"},{"stage":"Cinedrome","day":"2025-08-15","start":"2025-08-15T17:30:00","end":"2025-08-15T18:30:00","artist":"Adrian Utley and 137 Jeff Keen Live Score Band"},{"stage":"Cinedrome","day":"2025-08-15","start":"2025-08-15T19:00:00","end":"2025-08-15T20:00:00","artist":"Beatles Dub Club AV Set"},{"stage":"Cinedrome","day":"2025-08-15","start":"2025-08-15T20:15:00","end":"2025-08-15T21:45:00","artist":"The Warriors - Live Rescore by DJ Cheeba"},{"stage":"Cinedrome","day":"2025-08-15","start":"2025-08-15T22:00:00","end":"2025-08-15T23:30:00","artist":"Desire: The Carl Craig Story"},{"stage":"Cinedrome","day":"2025-08-15","start":"2025-08-16T00:30:00","end":"2025-08-16T02:30:00","artist":"Purple Rain"},{"stage":"Wishbone","day":"2025-08-15","start":"2025-08-15T21:15:00","end":"2025-08-15T22:00:00","artist":"Green Man and the Houseplants"},{"stage":"Wishbone","day":"2025-08-15","start":"2025-08-15T22:15:00","end":"2025-08-15T22:30:00","artist":"The Lipsinkers"},{"stage":"Wishbone","day":"2025-08-15","start":"2025-08-15T22:40:00","end":"2025-08-15T23:00:00","artist":"The Cool Beans Dance Off"},{"stage":"Wishbone","day":"2025-08-15","start":"2025-08-15T23:00:00","end":"2025-08-15T23:15:00","artist":"The Lipsinkers"},{"stage":"Wishbone","day":"2025-08-15","start":"2025-08-15T23:15:00","end":"2025-08-16T01:15:00","artist":"Twisted Time Machine"},{"stage":"Wishbone","day":"2025-08-15","start":"2025-08-16T01:15:00","end":"2025-08-16T03:00:00","artist":"Bearfam"},{"stage":"Rough Trade tent signings","day":"2025-08-15","start":"2025-08-15T14:30:00","end":"2025-08-15T15:00:00","artist":"Delivery"},{"stage":"Rough Trade tent signings","day":"2025-08-15","start":"2025-08-15T15:00:00","end":"2025-08-15T15:30:00","artist":"John Grant"},{"stage":"Rough Trade tent signings","day":"2025-08-15","start":"2025-08-15T15:30:00","end":"2025-08-15T16:00:00","artist":"Horse Jumper Of Love"},{"stage":"Rough Trade tent signings","day":"2025-08-15","start":"2025-08-15T16:00:00","end":"2025-08-15T16:30:00","artist":"Nadia Reid"},{"stage":"Rough Trade tent signings","day":"2025-08-15","start":"2025-08-15T17:00:00","end":"2025-08-15T17:30:00","artist":"Ditz"},{"stage":"Rough Trade tent signings","day":"2025-08-15","start":"2025-08-15T18:00:00","end":"2025-08-15T18:30:00","artist":"Pissed Jeans"},{"stage":"Rough Trade tent signings","day":"2025-08-15","start":"2025-08-15T20:00:00","end":"2025-08-15T20:30:00","artist":"Alan Sparhawk"},{"stage":"Mountain Stage","day":"2025-08-16","start":"2025-08-16T11:40:00","end":"2025-08-16T12:00:00","artist":"Boss Morris"},{"stage":"Mountain Stage","day":"2025-08-16","start":"2025-08-16T12:30:00","end":"2025-08-16T13:30:00","artist":"Broadside Hacks Presents A Tribute To Bob Dylan"},{"stage":"Mountain Stage","day":"2025-08-16","start":"2025-08-16T14:00:00","end":"2025-08-16T15:00:00","artist":"Fulu Miziki"},{"stage":"Mountain Stage","day":"2025-08-16","start":"2025-08-16T15:30:00","end":"2025-08-16T16:30:00","artist":"Gwenno"},{"stage":"Mountain Stage","day":"2025-08-16","start":"2025-08-16T17:00:00","end":"2025-08-16T18:30:00","artist":"MJ Lenderman"},{"stage":"Mountain Stage","day":"2025-08-16","start":"2025-08-16T19:15:00","end":"2025-08-16T20:15:00","artist":"Perfume Genius"},{"stage":"Mountain Stage","day":"2025-08-16","start":"2025-08-16T21:00:00","end":"2025-08-16T22:15:00","artist":"CMAT"},{"stage":"Mountain Stage","day":"2025-08-16","start":"2025-08-16T23:00:00","end":"2025-08-17T00:30:00","artist":"Underworld"},{"stage":"Far Out","day":"2025-08-16","start":"2025-08-16T12:30:00","end":"2025-08-16T13:15:00","artist":"Rocket"},{"stage":"Far Out","day":"2025-08-16","start":"2025-08-16T13:45:00","end":"2025-08-16T14:30:00","artist":"Cowbois Rhos Botwnnog"},{"stage":"Far Out","day":"2025-08-16","start":"2025-08-16T15:00:00","end":"2025-08-16T16:00:00","artist":"Derya Yildirim & Grup Simsek"},{"stage":"Far Out","day":"2025-08-16","start":"2025-08-16T16:30:00","end":"2025-08-16T17:30:00","artist":"Melin Melyn"},{"stage":"Far Out","day":"2025-08-16","start":"2025-08-16T18:00:00","end":"2025-08-16T19:00:00","artist":"Just Mustard"},{"stage":"Far Out","day":"2025-08-16","start":"2025-08-16T19:40:00","end":"2025-08-16T20:45:00","artist":"Fat Dog"},{"stage":"Far Out","day":"2025-08-16","start":"2025-08-16T21:15:00","end":"2025-08-16T22:15:00","artist":"Kokoroko"},{"stage":"Far Out","day":"2025-08-16","start":"2025-08-16T22:45:00","end":"2025-08-17T00:00:00","artist":"English Teacher"},{"stage":"Far Out","day":"2025-08-16","start":"2025-08-17T00:30:00","end":"2025-08-17T02:00:00","artist":"DJ Paulette"},{"stage":"Far Out","day":"2025-08-16","start":"2025-08-17T02:00:00","end":"2025-08-17T03:30:00","artist":"Jamz Supernova"},{"stage":"Walled Garden","day":"2025-08-16","start":"2025-08-16T12:00:00","end":"2025-08-16T13:00:00","artist":"Lucy Gooch"},{"stage":"Walled Garden","day":"2025-08-16","start":"2025-08-16T13:30:00","end":"2025-08-16T14:15:00","artist":"jasmine.4.t"},{"stage":"Walled Garden","day":"2025-08-16","start":"2025-08-16T14:45:00","end":"2025-08-16T15:30:00","artist":"mark william lewis"},{"stage":"Walled Garden","day":"2025-08-16","start":"2025-08-16T16:00:00","end":"2025-08-16T16:45:00","artist":"Allegra Krieger"},{"stage":"Walled Garden","day":"2025-08-16","start":"2025-08-16T17:15:00","end":"2025-08-16T18:00:00","artist":"YHWH Nailgun"},{"stage":"Walled Garden","day":"2025-08-16","start":"2025-08-16T18:45:00","end":"2025-08-16T19:45:00","artist":"Daisy Rickman"},{"stage":"Walled Garden","day":"2025-08-16","start":"2025-08-16T20:30:00","end":"2025-08-16T21:15:00","artist":"caroline"},{"stage":"Walled Garden","day":"2025-08-16","start":"2025-08-16T21:45:00","end":"2025-08-16T22:45:00","artist":"John Glacier"},{"stage":"Walled Garden","day":"2025-08-16","start":"2025-08-16T23:20:00","end":"2025-08-17T00:20:00","artist":"Richard Dawson"},{"stage":"Walled Garden","day":"2025-08-16","start":"2025-08-17T00:50:00","end":"2025-08-17T01:50:00","artist":"Chalk"},{"stage":"Walled Garden","day":"2025-08-16","start":"2025-08-17T02:00:00","end":"2025-08-17T03:00:00","artist":"Tom Sharkett (DJ)"},{"stage":"Rising","day":"2025-08-16","start":"2025-08-16T11:10:00","end":"2025-08-16T11:40:00","artist":"Lots Of Hands"},{"stage":"Rising","day":"2025-08-16","start":"2025-08-16T12:00:00","end":"2025-08-16T12:30:00","artist":"Sarah Meth"},{"stage":"Rising","day":"2025-08-16","start":"2025-08-16T13:30:00","end":"2025-08-16T14:00:00","artist":"Truthpaste"},{"stage":"Rising","day":"2025-08-16","start":"2025-08-16T15:00:00","end":"2025-08-16T15:30:00","artist":"RIP Magic"},{"stage":"Rising","day":"2025-08-16","start":"2025-08-16T16:30:00","end":"2025-08-16T17:00:00","artist":"Pem"},{"stage":"Rising","day":"2025-08-16","start":"2025-08-16T18:30:00","end":"2025-08-16T19:15:00","artist":"Westside Cowboy"},{"stage":"Rising","day":"2025-08-16","start":"2025-08-16T20:15:00","end":"2025-08-16T21:00:00","artist":"Honesty"},{"stage":"Rising","day":"2025-08-16","start":"2025-08-16T22:15:00","end":"2025-08-16T23:00:00","artist":"Black Fondu"},{"stage":"Chai Wallahs","day":"2025-08-16","start":"2025-08-16T11:00:00","end":"2025-08-16T12:00:00","artist":"Singing With Seamas"},{"stage":"Chai Wallahs","day":"2025-08-16","start":"2025-08-16T12:00:00","end":"2025-08-16T13:00:00","artist":"King Willy Will"},{"stage":"Chai Wallahs","day":"2025-08-16","start":"2025-08-16T13:30:00","end":"2025-08-16T14:30:00","artist":"Taff Rapids"},{"stage":"Chai Wallahs","day":"2025-08-16","start":"2025-08-16T15:00:00","end":"2025-08-16T16:00:00","artist":"Sheelanagig"},{"stage":"Chai Wallahs","day":"2025-08-16","start":"2025-08-16T16:30:00","end":"2025-08-16T17:30:00","artist":"Binbag Wisdom"},{"stage":"Chai Wallahs","day":"2025-08-16","start":"2025-08-16T18:00:00","end":"2025-08-16T19:00:00","artist":"Simaly Sound"},{"stage":"Chai Wallahs","day":"2025-08-16","start":"2025-08-16T19:30:00","end":"2025-08-16T20:30:00","artist":"Voodoo Brass Band"},{"stage":"Chai Wallahs","day":"2025-08-16","start":"2025-08-16T21:00:00","end":"2025-08-16T22:00:00","artist":"Amy True"},{"stage":"Chai Wallahs","day":"2025-08-16","start":"2025-08-16T22:00:00","end":"2025-08-16T23:00:00","artist":"Mr Fitz"},{"stage":"Chai Wallahs","day":"2025-08-16","start":"2025-08-16T23:00:00","end":"2025-08-17T00:00:00","artist":"An Dannsa Dub"},{"stage":"Chai Wallahs","day":"2025-08-16","start":"2025-08-17T00:30:00","end":"2025-08-17T01:30:00","artist":"They Say Jump"},{"stage":"Chai Wallahs","day":"2025-08-16","start":"2025-08-17T01:30:00","end":"2025-08-17T04:00:00","artist":"Big Beat Boutique ft. Diplomats Of Sound DJs"},{"stage":"Round The Twist","day":"2025-08-16","start":"2025-08-16T19:30:00","end":"2025-08-16T20:15:00","artist":"Aili"},{"stage":"Round The Twist","day":"2025-08-16","start":"2025-08-16T20:40:00","end":"2025-08-16T22:00:00","artist":"Don Leisure"},{"stage":"Round The Twist","day":"2025-08-16","start":"2025-08-16T22:00:00","end":"2025-08-16T23:30:00","artist":"Baggy Mondays"},{"stage":"Round The Twist","day":"2025-08-16","start":"2025-08-16T23:30:00","end":"2025-08-17T01:00:00","artist":"Indie Amnesty"},{"stage":"Round The Twist","day":"2025-08-16","start":"2025-08-17T01:00:00","end":"2025-08-17T03:00:00","artist":"Dutty Disco"},{"stage":"Babbling Tongues","day":"2025-08-16","start":"2025-08-16T12:00:00","end":"2025-08-16T13:30:00","artist":"Green Man Pop Quiz"},{"stage":"Babbling Tongues","day":"2025-08-16","start":"2025-08-16T13:45:00","end":"2025-08-16T14:30:00","artist":"Merthyr: Iron Capital of the World"},{"stage":"Babbling Tongues","day":"2025-08-16","start":"2025-08-16T14:45:00","end":"2025-08-16T15:45:00","artist":"Street Level Superstar: Will Hodgkinson and Lawrence"},{"stage":"Babbling Tongues","day":"2025-08-16","start":"2025-08-16T16:00:00","end":"2025-08-16T16:45:00","artist":"jasmine.4.t in conversation w/Ash Kenazi"},{"stage":"Babbling Tongues","day":"2025-08-16","start":"2025-08-16T17:00:00","end":"2025-08-16T18:00:00","artist":"Oasis: A Sound So Very Loud"},{"stage":"Babbling Tongues","day":"2025-08-16","start":"2025-08-16T19:05:00","end":"2025-08-16T19:50:00","artist":"Gavin Osborn"},{"stage":"Babbling Tongues","day":"2025-08-16","start":"2025-08-16T20:20:00","end":"2025-08-16T21:10:00","artist":"Stewart Lee"},{"stage":"Babbling Tongues","day":"2025-08-16","start":"2025-08-16T21:15:00","end":"2025-08-16T21:45:00","artist":"Harriet Dyer"},{"stage":"Babbling Tongues","day":"2025-08-16","start":"2025-08-16T21:50:00","end":"2025-08-16T22:35:00","artist":"Kiri Pritchard-McLean"},{"stage":"Babbling Tongues","day":"2025-08-16","start":"2025-08-16T23:05:00","end":"2025-08-16T23:50:00","artist":"Jarred Christmas"},{"stage":"Cinedrome","day":"2025-08-16","start":"2025-08-16T09:30:00","end":"2025-08-16T11:15:00","artist":"Babe 30th Anniversary"},{"stage":"Cinedrome","day":"2025-08-16","start":"2025-08-16T11:20:00","end":"2025-08-16T13:00:00","artist":"The Colours Within"},{"stage":"Cinedrome","day":"2025-08-16","start":"2025-08-16T15:00:00","end":"2025-08-16T17:15:00","artist":"Mr Burton"},{"stage":"Cinedrome","day":"2025-08-16","start":"2025-08-16T17:45:00","end":"2025-08-16T19:45:00","artist":"The Extraordinary Miss Flower Live Set"},{"stage":"Cinedrome","day":"2025-08-16","start":"2025-08-16T20:00:00","end":"2025-08-16T22:00:00","artist":"Bjork Cornucopia"},{"stage":"Cinedrome","day":"2025-08-16","start":"2025-08-16T22:00:00","end":"2025-08-17T00:00:00","artist":"L'Atalante"},{"stage":"Cinedrome","day":"2025-08-16","start":"2025-08-17T00:30:00","end":"2025-08-17T02:30:00","artist":"Sunshine"},{"stage":"Wishbone","day":"2025-08-16","start":"2025-08-16T21:15:00","end":"2025-08-16T21:45:00","artist":"Queer Cxntry: Line Dancing"},{"stage":"Wishbone","day":"2025-08-16","start":"2025-08-16T21:45:00","end":"2025-08-16T23:15:00","artist":"Queer Cxntry: The Northdown Rodeo"},{"stage":"Wishbone","day":"2025-08-16","start":"2025-08-17T01:30:00","end":"2025-08-17T03:00:00","artist":"Alfresco Disco"},{"stage":"Rough Trade tent signings","day":"2025-08-16","start":"2025-08-16T16:30:00","end":"2025-08-16T17:00:00","artist":"Derya Yildirim & Grup Simsek"},{"stage":"Rough Trade tent signings","day":"2025-08-16","start":"2025-08-16T17:00:00","end":"2025-08-16T17:30:00","artist":"Gwenno"},{"stage":"Rough Trade tent signings","day":"2025-08-16","start":"2025-08-16T19:30:00","end":"2025-08-16T20:00:00","artist":"Just Mustard"},{"stage":"Mountain Stage","day":"2025-08-17","start":"2025-08-17T12:20:00","end":"2025-08-17T13:05:00","artist":"Hannah Frances"},{"stage":"Mountain Stage","day":"2025-08-17","start":"2025-08-17T13:35:00","end":"2025-08-17T14:35:00","artist":"Cass McCombs"},{"stage":"Mountain Stage","day":"2025-08-17","start":"2025-08-17T15:05:00","end":"2025-08-17T16:05:00","artist":"Asha Puthli"},{"stage":"Mountain Stage","day":"2025-08-17","start":"2025-08-17T16:50:00","end":"2025-08-17T17:50:00","artist":"Warmduscher"},{"stage":"Mountain Stage","day":"2025-08-17","start":"2025-08-17T18:35:00","end":"2025-08-17T19:35:00","artist":"Yard Act"},{"stage":"Mountain Stage","day":"2025-08-17","start":"2025-08-17T20:20:00","end":"2025-08-17T21:30:00","artist":"Beth Gibbons"},{"stage":"Mountain Stage","day":"2025-08-17","start":"2025-08-17T22:15:00","end":"2025-08-17T23:45:00","artist":"TV On The Radio"},{"stage":"Far Out","day":"2025-08-17","start":"2025-08-17T12:00:00","end":"2025-08-17T12:45:00","artist":"Cloth"},{"stage":"Far Out","day":"2025-08-17","start":"2025-08-17T13:15:00","end":"2025-08-17T14:00:00","artist":"Upchuck"},{"stage":"Far Out","day":"2025-08-17","start":"2025-08-17T14:30:00","end":"2025-08-17T15:15:00","artist":"Being Dead"},{"stage":"Far Out","day":"2025-08-17","start":"2025-08-17T16:00:00","end":"2025-08-17T17:00:00","artist":"Good Sad Happy Bad"},{"stage":"Far Out","day":"2025-08-17","start":"2025-08-17T17:30:00","end":"2025-08-17T18:30:00","artist":"Divorce"},{"stage":"Far Out","day":"2025-08-17","start":"2025-08-17T19:15:00","end":"2025-08-17T20:15:00","artist":"Cassandra Jenkins"},{"stage":"Far Out","day":"2025-08-17","start":"2025-08-17T21:00:00","end":"2025-08-17T22:00:00","artist":"Nilufer Yanya"},{"stage":"Far Out","day":"2025-08-17","start":"2025-08-17T22:45:00","end":"2025-08-18T00:00:00","artist":"Cymande"},{"stage":"Far Out","day":"2025-08-17","start":"2025-08-18T00:40:00","end":"2025-08-18T01:40:00","artist":"Kelly Lee Owens"},{"stage":"Far Out","day":"2025-08-17","start":"2025-08-18T01:40:00","end":"2025-08-18T03:30:00","artist":"High Contrast"},{"stage":"Walled Garden","day":"2025-08-17","start":"2025-08-17T12:00:00","end":"2025-08-17T12:45:00","artist":"Bridget Hayden and the Apparitions"},{"stage":"Walled Garden","day":"2025-08-17","start":"2025-08-17T13:15:00","end":"2025-08-17T14:00:00","artist":"Molina"},{"stage":"Walled Garden","day":"2025-08-17","start":"2025-08-17T14:30:00","end":"2025-08-17T15:15:00","artist":"Iraina Mancini"},{"stage":"Walled Garden","day":"2025-08-17","start":"2025-08-17T15:45:00","end":"2025-08-17T16:30:00","artist":"Oisin Leech"},{"stage":"Walled Garden","day":"2025-08-17","start":"2025-08-17T17:00:00","end":"2025-08-17T17:45:00","artist":"Folk Bitch Trio"},{"stage":"Walled Garden","day":"2025-08-17","start":"2025-08-17T18:30:00","end":"2025-08-17T19:30:00","artist":"Been Stellar"},{"stage":"Walled Garden","day":"2025-08-17","start":"2025-08-17T20:00:00","end":"2025-08-17T20:45:00","artist":"Joshua Idehen"},{"stage":"Walled Garden","day":"2025-08-17","start":"2025-08-17T21:15:00","end":"2025-08-17T22:15:00","artist":"Pictish Trail"},{"stage":"Walled Garden","day":"2025-08-17","start":"2025-08-17T22:45:00","end":"2025-08-17T23:45:00","artist":"Big Special"},{"stage":"Walled Garden","day":"2025-08-17","start":"2025-08-18T00:30:00","end":"2025-08-18T03:00:00","artist":"Deptford Northern Soul Club"},{"stage":"Rising","day":"2025-08-17","start":"2025-08-17T11:50:00","end":"2025-08-17T12:20:00","artist":"Muriel"},{"stage":"Rising","day":"2025-08-17","start":"2025-08-17T14:35:00","end":"2025-08-17T15:05:00","artist":"Aga Ujma"},{"stage":"Rising","day":"2025-08-17","start":"2025-08-17T16:05:00","end":"2025-08-17T16:50:00","artist":"Astles"},{"stage":"Rising","day":"2025-08-17","start":"2025-08-17T17:50:00","end":"2025-08-17T18:35:00","artist":"Ella Ion"},{"stage":"Rising","day":"2025-08-17","start":"2025-08-17T19:35:00","end":"2025-08-17T20:20:00","artist":"Cruel Sister"},{"stage":"Rising","day":"2025-08-17","start":"2025-08-17T21:30:00","end":"2025-08-17T22:15:00","artist":"Morn"},{"stage":"Chai Wallahs","day":"2025-08-17","start":"2025-08-17T11:00:00","end":"2025-08-17T12:00:00","artist":"Singing With Seamas"},{"stage":"Chai Wallahs","day":"2025-08-17","start":"2025-08-17T12:00:00","end":"2025-08-17T13:00:00","artist":"Madalitso Band"},{"stage":"Chai Wallahs","day":"2025-08-17","start":"2025-08-17T13:15:00","end":"2025-08-17T14:15:00","artist":"Gecko"},{"stage":"Chai Wallahs","day":"2025-08-17","start":"2025-08-17T14:30:00","end":"2025-08-17T15:30:00","artist":"Good Habits"},{"stage":"Chai Wallahs","day":"2025-08-17","start":"2025-08-17T16:00:00","end":"2025-08-17T17:00:00","artist":"Urban Folk Quartet"},{"stage":"Chai Wallahs","day":"2025-08-17","start":"2025-08-17T17:30:00","end":"2025-08-17T18:30:00","artist":"The Zawose Queens"},{"stage":"Chai Wallahs","day":"2025-08-17","start":"2025-08-17T19:00:00","end":"2025-08-17T20:30:00","artist":"Conn3ct ft. Aziza Jaye, Amy True & Madly"},{"stage":"Chai Wallahs","day":"2025-08-17","start":"2025-08-17T21:00:00","end":"2025-08-17T22:00:00","artist":"Agbeko"},{"stage":"Chai Wallahs","day":"2025-08-17","start":"2025-08-17T22:30:00","end":"2025-08-17T23:30:00","artist":"High Fade"},{"stage":"Chai Wallahs","day":"2025-08-17","start":"2025-08-17T23:30:00","end":"2025-08-18T00:00:00","artist":"Bloco B"},{"stage":"Chai Wallahs","day":"2025-08-17","start":"2025-08-18T00:15:00","end":"2025-08-18T01:15:00","artist":"Rioghnach Connolly & Honeyfeet"},{"stage":"Chai Wallahs","day":"2025-08-17","start":"2025-08-18T01:15:00","end":"2025-08-18T04:00:00","artist":"Afrodisiac ft. Selectah Si Chai"},{"stage":"Round The Twist","day":"2025-08-17","start":"2025-08-17T19:00:00","end":"2025-08-17T20:00:00","artist":"Ash Kenazi"},{"stage":"Round The Twist","day":"2025-08-17","start":"2025-08-17T20:00:00","end":"2025-08-17T21:00:00","artist":"Beth Knight"},{"stage":"Round The Twist","day":"2025-08-17","start":"2025-08-17T21:00:00","end":"2025-08-17T22:00:00","artist":"Been Stellar DJ"},{"stage":"Round The Twist","day":"2025-08-17","start":"2025-08-17T22:00:00","end":"2025-08-17T22:40:00","artist":"Tatyana"},{"stage":"Round The Twist","day":"2025-08-17","start":"2025-08-17T23:20:00","end":"2025-08-17T23:50:00","artist":"Pearl2"},{"stage":"Round The Twist","day":"2025-08-17","start":"2025-08-18T01:00:00","end":"2025-08-18T02:00:00","artist":"Grove x Taliable x Toya Delazy"},{"stage":"Round The Twist","day":"2025-08-17","start":"2025-08-18T02:00:00","end":"2025-08-18T03:30:00","artist":"Technodaddy666"},{"stage":"Babbling Tongues","day":"2025-08-17","start":"2025-08-17T12:00:00","end":"2025-08-17T13:00:00","artist":"101 Part Time Jobs live podcast"},{"stage":"Babbling Tongues","day":"2025-08-17","start":"2025-08-17T14:15:00","end":"2025-08-17T15:15:00","artist":"Manic Street Preachers: 168 Songs"},{"stage":"Babbling Tongues","day":"2025-08-17","start":"2025-08-17T16:15:00","end":"2025-08-17T17:00:00","artist":"Kelly Lee Owens in Conversation"},{"stage":"Babbling Tongues","day":"2025-08-17","start":"2025-08-17T19:50:00","end":"2025-08-17T20:30:00","artist":"Olga Koch"},{"stage":"Babbling Tongues","day":"2025-08-17","start":"2025-08-17T21:15:00","end":"2025-08-17T22:00:00","artist":"Rob Deering"},{"stage":"Babbling Tongues","day":"2025-08-17","start":"2025-08-17T22:20:00","end":"2025-08-17T23:05:00","artist":"Robin Morgan"},{"stage":"Cinedrome","day":"2025-08-17","start":"2025-08-17T09:30:00","end":"2025-08-17T11:15:00","artist":"Lyle, Lyle, Crocodile"},{"stage":"Cinedrome","day":"2025-08-17","start":"2025-08-17T11:45:00","end":"2025-08-17T13:15:00","artist":"Survivor with Live Score"},{"stage":"Cinedrome","day":"2025-08-17","start":"2025-08-17T15:00:00","end":"2025-08-17T16:30:00","artist":"Green Man Film Quiz"},{"stage":"Cinedrome","day":"2025-08-17","start":"2025-08-17T17:00:00","end":"2025-08-17T19:00:00","artist":"Rave On For The Avon"},{"stage":"Cinedrome","day":"2025-08-17","start":"2025-08-17T19:00:00","end":"2025-08-17T21:40:00","artist":"Amadeus"},{"stage":"Cinedrome","day":"2025-08-17","start":"2025-08-18T01:00:00","end":"2025-08-18T02:45:00","artist":"Studio One Forever"},{"stage":"Wishbone","day":"2025-08-17","start":"2025-08-17T21:00:00","end":"2025-08-17T22:30:00","artist":"The Bandaoke Show"},{"stage":"Wishbone","day":"2025-08-17","start":"2025-08-17T22:40:00","end":"2025-08-17T23:40:00","artist":"Cabaret Sauvignon"},{"stage":"Wishbone","day":"2025-08-17","start":"2025-08-18T00:15:00","end":"2025-08-18T01:15:00","artist":"The Fleetwood Mac Celebration"},{"stage":"Wishbone","day":"2025-08-17","start":"2025-08-18T01:30:00","end":"2025-08-18T03:00:00","artist":"Glitterball"},{"stage":"Rough Trade tent signings","day":"2025-08-17","start":"2025-08-17T14:00:00","end":"2025-08-17T14:30:00","artist":"Cassandra Jenkins"},{"stage":"Rough Trade tent signings","day":"2025-08-17","start":"2025-08-17T16:00:00","end":"2025-08-17T16:30:00","artist":"Being Dead"},{"stage":"Rough Trade tent signings","day":"2025-08-17","start":"2025-08-17T17:30:00","end":"2025-08-17T18:00:00","artist":"Kelly Lee Owens"},{"stage":"Rough Trade tent signings","day":"2025-08-17","start":"2025-08-17T19:00:00","end":"2025-08-17T19:30:00","artist":"Tunde Adebimpe"}]};
+
+// ══════════════════════════════════════════
+// STATE
+// ══════════════════════════════════════════
+const STORAGE_KEY    = 'gm2025_ratings';
+const PHOTO_CACHE_KEY = 'gm2025_photos';
+let ratings    = {};
+let photoCache = {};
+let activeDay  = '2025-08-14';
+let activeStage = 'all';
+let currentView = 'browse';
+let carouselIdx = 0;
+
+const NOW_NEXT_STAGES = ['Mountain Stage', 'Far Out', 'Walled Garden'];
+
+function loadState() {
+  try { ratings    = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}'); } catch(e) { ratings = {}; }
+  try { photoCache = JSON.parse(localStorage.getItem(PHOTO_CACHE_KEY) || '{}'); } catch(e) { photoCache = {}; }
+}
+
+function saveRatings()    { localStorage.setItem(STORAGE_KEY, JSON.stringify(ratings)); }
+function savePhotoCache() { localStorage.setItem(PHOTO_CACHE_KEY, JSON.stringify(photoCache)); }
+
+function actKey(act) { return `${act.stage}||${act.start}`; }
+function getRating(act) { return ratings[actKey(act)]; }
+
+function setRating(act, r) {
+  const key = actKey(act);
+  if (ratings[key] === r) { delete ratings[key]; }
+  else { ratings[key] = r; }
+  saveRatings();
+  // Trigger photo fetch if rated 1, 2 or 3
+  const newR = ratings[key];
+  if (newR !== undefined && newR > 0) {
+    fetchArtistPhoto(act.artist);
+  }
+}
+
+// ══════════════════════════════════════════
+// LAST.FM PHOTO FETCH
+// ══════════════════════════════════════════
+async function fetchArtistPhoto(artist) {
+  if (!LASTFM_API_KEY) return;                    // no key yet, skip
+  if (photoCache[artist] !== undefined) return;   // already fetched (even if null)
+
+  try {
+    const url = `https://ws.audioscrobbler.com/2.0/?method=artist.getinfo&artist=${encodeURIComponent(artist)}&api_key=${LASTFM_API_KEY}&format=json`;
+    const res  = await fetch(url);
+    const data = await res.json();
+    const images = data?.artist?.image;
+    // Last.fm returns array of sizes; grab 'extralarge' or 'large'
+    const img = images?.find(i => i.size === 'extralarge') || images?.find(i => i.size === 'large');
+    const src = img?.['#text'] || null;
+    // Last.fm sometimes returns an empty string for missing images
+    photoCache[artist] = (src && src.length > 10) ? src : null;
+    savePhotoCache();
+    // Update any visible cards for this artist
+    updateCardPhoto(artist);
+  } catch(e) {
+    photoCache[artist] = null;
+    savePhotoCache();
+  }
+}
+
+function getPhoto(artist) {
+  return photoCache[artist] || null;
+}
+
+function updateCardPhoto(artist) {
+  // Update browse cards
+  document.querySelectorAll('.act-card').forEach(card => {
+    if (card.dataset.artist === artist) {
+      applyCardPhoto(card, artist);
+    }
+  });
+}
+
+function applyCardPhoto(card, artist) {
+  const photo = getPhoto(artist);
+  const bg = card.querySelector('.act-card-bg');
+  if (photo && bg) {
+    bg.style.backgroundImage = `url('${photo}')`;
+    bg.style.background = '';
+  }
+}
+
+// ══════════════════════════════════════════
+// HELPERS
+// ══════════════════════════════════════════
+function fmtTime(iso) {
+  const d = new Date(iso);
+  return d.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit', hour12: false });
+}
+
+function fmtMinsRemaining(isoEnd) {
+  const mins = Math.round((new Date(isoEnd) - getNow()) / 60000);
+  if (mins <= 0) return 'ending';
+  return `${mins} min${mins !== 1 ? 's' : ''} left`;
+}
+
+function fmtMinsUntil(isoStart) {
+  const mins = Math.round((new Date(isoStart) - getNow()) / 60000);
+  if (mins < 60) return `in ${mins} min${mins !== 1 ? 's' : ''}`;
+  const hrs = Math.floor(mins / 60);
+  const rem = mins % 60;
+  return rem > 0 ? `in ${hrs}h ${rem}m` : `in ${hrs}h`;
+}
+
+const RATING_CONFIG = {
+  3: { emoji: '★', label: 'Must see' },
+  2: { emoji: '✦', label: 'Want to see' },
+  1: { emoji: '◦', label: 'Maybe' },
+  0: { emoji: '✕', label: 'Skip' },
+};
+
+const STAGE_GRADIENTS = {
+  'Mountain Stage':            'linear-gradient(160deg, #1a3a1a 0%, #2d5a2d 100%)',
+  'Far Out':                   'linear-gradient(160deg, #1a1a3a 0%, #2d2d5a 100%)',
+  'Walled Garden':             'linear-gradient(160deg, #2a2a1a 0%, #4a4a1a 100%)',
+  'Rising':                    'linear-gradient(160deg, #3a1a1a 0%, #5a2a1a 100%)',
+  'Chai Wallahs':              'linear-gradient(160deg, #3a2a1a 0%, #5a3a1a 100%)',
+  'Round The Twist':           'linear-gradient(160deg, #1a2a3a 0%, #1a3a4a 100%)',
+  'Babbling Tongues':          'linear-gradient(160deg, #2a1a3a 0%, #3a1a4a 100%)',
+  'Cinedrome':                 'linear-gradient(160deg, #1a1a1a 0%, #2a2a2a 100%)',
+  'Wishbone':                  'linear-gradient(160deg, #3a1a2a 0%, #4a1a3a 100%)',
+  'Rough Trade tent signings': 'linear-gradient(160deg, #1a2a1a 0%, #2a3a2a 100%)',
+};
+
+// ══════════════════════════════════════════
+// BROWSE VIEW
+// ══════════════════════════════════════════
+function buildStagePills() {
+  const container = document.getElementById('stage-pills');
+  container.innerHTML = '';
+
+  const allPill = document.createElement('button');
+  allPill.className = 'stage-pill' + (activeStage === 'all' ? ' active' : '');
+  allPill.textContent = 'All stages';
+  allPill.onclick = () => { activeStage = 'all'; buildStagePills(); renderActList(); };
+  container.appendChild(allPill);
+
+  const stagesForDay = [...new Set(FESTIVAL_DATA.acts.filter(a => a.day === activeDay).map(a => a.stage))];
+  FESTIVAL_DATA.stages.forEach(s => {
+    if (!stagesForDay.includes(s)) return;
+    const pill = document.createElement('button');
+    pill.className = 'stage-pill' + (activeStage === s ? ' active' : '');
+    pill.textContent = s;
+    pill.onclick = () => { activeStage = s; buildStagePills(); renderActList(); };
+    container.appendChild(pill);
+  });
+}
+
+function renderActList() {
+  const container = document.getElementById('act-list');
+  let acts = FESTIVAL_DATA.acts.filter(a => a.day === activeDay);
+  if (activeStage !== 'all') acts = acts.filter(a => a.stage === activeStage);
+  acts.sort((a, b) => a.start.localeCompare(b.start));
+
+  if (acts.length === 0) {
+    container.innerHTML = '<div class="empty-state"><div class="icon">🌿</div><p>Nothing on.<br>Try another day or stage.</p></div>';
+    return;
+  }
+
+  const blocks = {};
+  acts.forEach(act => {
+    const hour = act.start.slice(0, 13);
+    if (!blocks[hour]) blocks[hour] = [];
+    blocks[hour].push(act);
+  });
+
+  container.innerHTML = '';
+  Object.entries(blocks).forEach(([hour, blockActs]) => {
+    const label = document.createElement('div');
+    label.className = 'time-block-header';
+    label.textContent = fmtTime(hour + ':00:00');
+    container.appendChild(label);
+    blockActs.forEach(act => container.appendChild(buildActCard(act)));
+  });
+}
+
+function buildActCard(act) {
+  const rating = getRating(act);
+  const card = document.createElement('div');
+  card.className = 'act-card';
+  card.dataset.artist = act.artist;
+  if (rating !== undefined) card.dataset.rating = rating;
+
+  const bg = document.createElement('div');
+  bg.className = 'act-card-bg';
+  const photo = getPhoto(act.artist);
+  if (photo) {
+    bg.style.backgroundImage = `url('${photo}')`;
+  } else {
+    bg.style.background = STAGE_GRADIENTS[act.stage] || STAGE_GRADIENTS['Mountain Stage'];
+  }
+  card.appendChild(bg);
+
+  const content = document.createElement('div');
+  content.className = 'act-card-content';
+
+  const info = document.createElement('div');
+  info.className = 'act-info';
+  info.innerHTML = `
+    <div class="act-name">${act.artist}</div>
+    <div class="act-meta">
+      <span>${fmtTime(act.start)}–${fmtTime(act.end)}</span>
+      <span class="dot">·</span>
+      <span>${act.stage}</span>
+    </div>
+  `;
+
+  const widget = document.createElement('div');
+  widget.className = 'rating-widget';
+  const dots = document.createElement('div');
+  dots.className = 'rating-dots';
+
+  [0, 1, 2, 3].forEach(r => {
+    const btn = document.createElement('button');
+    btn.className = 'rating-btn';
+    btn.dataset.r = r;
+    btn.title = RATING_CONFIG[r].label;
+    btn.textContent = RATING_CONFIG[r].emoji;
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      setRating(act, r);
+      const newRating = getRating(act);
+      if (newRating !== undefined) {
+        card.dataset.rating = newRating;
+      } else {
+        delete card.dataset.rating;
+      }
+      if (newRating === 0) card.style.opacity = '0.45';
+      else card.style.opacity = '';
+      // If a positive rating, apply photo if we already have it
+      if (newRating > 0 && getPhoto(act.artist)) {
+        applyCardPhoto(card, act.artist);
+      }
+      ratingLabel.textContent = newRating !== undefined ? RATING_CONFIG[newRating].label : 'Rate';
+    });
+    dots.appendChild(btn);
+  });
+
+  const ratingLabel = document.createElement('div');
+  ratingLabel.className = 'rating-label';
+  ratingLabel.textContent = rating !== undefined ? RATING_CONFIG[rating].label : 'Rate';
+
+  widget.appendChild(dots);
+  widget.appendChild(ratingLabel);
+  content.appendChild(info);
+  content.appendChild(widget);
+  card.appendChild(content);
+  return card;
+}
+
+// ══════════════════════════════════════════
+// NOW & NEXT — SWIPE CAROUSEL
+// ══════════════════════════════════════════
+let touchStartX = 0;
+let touchStartY = 0;
+
+function renderNowNext() {
+  const now = getNow();
+  NOW_NEXT_STAGES.forEach((stage, i) => {
+    const slide = document.getElementById(`slide-${i}`);
+    slide.innerHTML = '';
+
+    const banner = document.createElement('div');
+    banner.className = 'stage-banner';
+    banner.textContent = stage;
+    slide.appendChild(banner);
+
+    const stageActs = FESTIVAL_DATA.acts
+      .filter(a => a.stage === stage)
+      .sort((a, b) => a.start.localeCompare(b.start));
+
+    const onNow  = stageActs.find(a => new Date(a.start) <= now && new Date(a.end) > now);
+    const onNext = stageActs.find(a => new Date(a.start) > now);
+
+    if (!onNow && !onNext) {
+      const el = document.createElement('div');
+      el.className = 'slot-nothing';
+      el.innerHTML = '<p>Nothing on at this stage right now</p>';
+      slide.appendChild(el);
+    } else {
+      if (onNow)  slide.appendChild(buildSlotCard(onNow,  true,  now));
+      if (onNext) slide.appendChild(buildSlotCard(onNext, false, now));
+    }
+
+    // Swipe hint only on first slide
+    if (i === 0) {
+      const hint = document.createElement('div');
+      hint.className = 'swipe-hint';
+      hint.textContent = '← swipe to see other stages →';
+      slide.appendChild(hint);
+    }
+  });
+
+  updateCarousel();
+}
+
+function buildSlotCard(act, isNow, now) {
+  const card = document.createElement('div');
+  card.className = 'slot-card';
+
+  const bg = document.createElement('div');
+  bg.className = 'slot-card-bg';
+  const photo = getPhoto(act.artist);
+  if (photo) {
+    bg.style.backgroundImage = `url('${photo}')`;
+    bg.style.backgroundSize = 'cover';
+    bg.style.backgroundPosition = 'center top';
+  } else {
+    bg.style.background = STAGE_GRADIENTS[act.stage] || STAGE_GRADIENTS['Mountain Stage'];
+  }
+  card.appendChild(bg);
+
+  const label = document.createElement('div');
+  label.className = `slot-label ${isNow ? 'now' : 'next'}`;
+  label.textContent = isNow ? '● Live now' : 'Up next';
+  card.appendChild(label);
+
+  const rating = getRating(act);
+  let pipHtml = '';
+  if (rating !== undefined && rating > 0) {
+    pipHtml = `<span class="rating-pip pip-${rating}"></span>`;
+  }
+
+  const content = document.createElement('div');
+  content.className = 'slot-content';
+  content.innerHTML = `
+    <div class="slot-artist">${act.artist}</div>
+    <div class="slot-meta">
+      ${pipHtml}
+      <span>${fmtTime(act.start)}–${fmtTime(act.end)}</span>
+      <span class="slot-timer">${isNow ? fmtMinsRemaining(act.end) : fmtMinsUntil(act.start)}</span>
+    </div>
+  `;
+  card.appendChild(content);
+  return card;
+}
+
+function updateCarousel() {
+  const slides = document.querySelectorAll('.stage-slide');
+  slides.forEach((slide, i) => {
+    slide.style.transform = `translateX(${(i - carouselIdx) * 100}%)`;
+  });
+  document.querySelectorAll('.stage-dot').forEach((dot, i) => {
+    dot.classList.toggle('active', i === carouselIdx);
+  });
+}
+
+function initCarouselSwipe() {
+  const carousel = document.getElementById('stage-carousel');
+
+  carousel.addEventListener('touchstart', e => {
+    touchStartX = e.touches[0].clientX;
+    touchStartY = e.touches[0].clientY;
+  }, { passive: true });
+
+  carousel.addEventListener('touchend', e => {
+    const dx = e.changedTouches[0].clientX - touchStartX;
+    const dy = e.changedTouches[0].clientY - touchStartY;
+    // Only register as horizontal swipe if more horizontal than vertical
+    if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 40) {
+      if (dx < 0 && carouselIdx < NOW_NEXT_STAGES.length - 1) carouselIdx++;
+      else if (dx > 0 && carouselIdx > 0) carouselIdx--;
+      updateCarousel();
+    }
+  }, { passive: true });
+}
+
+// ══════════════════════════════════════════
+// MY PICKS VIEW
+// ══════════════════════════════════════════
+function renderPicks() {
+  const container = document.getElementById('picks-list');
+  container.innerHTML = '';
+
+  const days = [
+    { key: '2025-08-14', label: 'Thursday 14th' },
+    { key: '2025-08-15', label: 'Friday 15th' },
+    { key: '2025-08-16', label: 'Saturday 16th' },
+    { key: '2025-08-17', label: 'Sunday 17th' },
+  ];
+
+  let anyPicks = false;
+
+  days.forEach(({ key, label }) => {
+    const picks = FESTIVAL_DATA.acts
+      .filter(a => a.day === key)
+      .filter(a => { const r = getRating(a); return r !== undefined && r > 0; })
+      .sort((a, b) => a.start.localeCompare(b.start));
+
+    if (picks.length === 0) return;
+    anyPicks = true;
+
+    const header = document.createElement('div');
+    header.className = 'picks-day-header';
+    header.textContent = label;
+    container.appendChild(header);
+
+    picks.forEach((act, i) => {
+      const isClash = picks.some((other, j) => {
+        if (i === j) return false;
+        return new Date(other.start) < new Date(act.end) &&
+               new Date(other.end) > new Date(act.start);
+      });
+
+      const row = document.createElement('div');
+      row.className = 'picks-row' + (isClash ? ' clash' : '');
+      const r = getRating(act);
+      row.innerHTML = `
+        <div class="picks-time">${fmtTime(act.start)}</div>
+        <span class="rating-pip pip-${r}" style="flex-shrink:0"></span>
+        <div class="picks-artist">${act.artist}</div>
+        <div class="picks-stage">${act.stage.replace(' Stage','').replace(' tent signings','')}</div>
+        ${isClash ? '<div class="clash-label">⚡ clash</div>' : ''}
+      `;
+      container.appendChild(row);
+    });
+  });
+
+  if (!anyPicks) {
+    container.innerHTML = `<div class="no-picks">
+      <p>No picks yet! 🌿<br><br>
+      Head to Browse and rate some acts.<br><br>
+      ★ Must see &nbsp;·&nbsp; ✦ Want to see &nbsp;·&nbsp; ◦ Maybe</p>
+    </div>`;
+  }
+}
+
+// ══════════════════════════════════════════
+// NAV & VIEW SWITCHING
+// ══════════════════════════════════════════
+function switchView(view) {
+  currentView = view;
+  ['browse','now','picks'].forEach(v => {
+    const el = document.getElementById(`view-${v}`);
+    el.style.display = v === view ? 'flex' : 'none';
+    el.style.flexDirection = 'column';
+  });
+  document.querySelectorAll('.nav-btn').forEach(b => {
+    b.classList.toggle('active', b.dataset.view === view);
+  });
+  if (view === 'now')   { carouselIdx = 0; renderNowNext(); }
+  if (view === 'picks') renderPicks();
+}
+
+document.getElementById('day-tabs').addEventListener('click', e => {
+  const tab = e.target.closest('.day-tab');
+  if (!tab) return;
+  activeDay = tab.dataset.day;
+  document.querySelectorAll('.day-tab').forEach(t => t.classList.remove('active'));
+  tab.classList.add('active');
+  activeStage = 'all';
+  buildStagePills();
+  renderActList();
+});
+
+// Auto-refresh Now & Next every minute
+setInterval(() => { if (currentView === 'now') renderNowNext(); }, 60000);
+
+// ══════════════════════════════════════════
+// INIT
+// ══════════════════════════════════════════
+loadState();
+initCarouselSwipe();
+buildStagePills();
+renderActList();
+switchView('browse');
+</script>
+</body>
+</html>
