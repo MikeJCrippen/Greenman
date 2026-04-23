@@ -3,29 +3,49 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Green Man 2025</title>
+<title>Green Man 2026</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
   :root {
-    --forest:    #0f1f0f;
-    --bark:      #1e2f1a;
-    --moss:      #2d4a27;
-    --amber:     #c8933a;
-    --amber-dim: #8a6025;
-    --cream:     #f5f0e8;
-    --mist:      #b8c4a8;
-    --must:      #e8a020;
-    --want:      #7ab648;
-    --maybe:     #5b8fc4;
-    --nope:      #666;
+    /* ── 2026 design tokens ── */
+    --ink:        #2a2240;
+    --ink-soft:   #3a2d5a;
+    --plum:       #4a3a6a;
+    --violet:     #8372b8;
+    --lilac:      #c4b7e0;
+    --lilac-pale: #e3dbef;
+    --forest:     #2f5a44;
+    --moss:       #4a8a6c;
+    --sage:       #8cc0a0;
+    --sage-pale:  #b6d9c1;
+    --sage-mist:  #d8ead9;
+    --sage-cream: #eaf1e4;
+    --blush:      #e9c4c8;
+    --cream:      #f5efe0;
+    --paper:      #fbf6e8;
+    --stamp:      #c94d4d;
+    --sun:        #e8a94a;
+
+    /* ── Legacy aliases — removed as each screen is rebuilt ── */
+    --forest-dk:  #0f1f0f;
+    --bark:       #1e2f1a;
+    --moss-dk:    #2d4a27;
+    --amber:      #c8933a;
+    --amber-dim:  #8a6025;
+    --mist:       #b8c4a8;
+    --must:       #e8a020;
+    --want:       #7ab648;
+    --maybe:      #5b8fc4;
+    --nope:       #666;
   }
 
   * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
 
   body {
-    font-family: 'DM Sans', sans-serif;
-    background: var(--forest);
+    font-family: 'Inter', 'Helvetica Neue', Helvetica, system-ui, sans-serif;
+    background: var(--forest-dk);
     color: var(--cream);
     height: 100dvh;
     display: flex;
@@ -45,7 +65,7 @@
 
   header {
     padding: 16px 20px 12px;
-    background: linear-gradient(180deg, var(--forest) 0%, transparent 100%);
+    background: linear-gradient(180deg, var(--forest-dk) 0%, transparent 100%);
     flex-shrink: 0;
     position: relative;
     z-index: 10;
@@ -59,7 +79,7 @@
   }
 
   h1 {
-    font-family: 'Playfair Display', serif;
+    font-family: 'Fraunces', 'Cooper Black', Georgia, serif;
     font-size: 26px;
     font-weight: 700;
     color: var(--cream);
@@ -88,10 +108,10 @@
     flex-shrink: 0;
     padding: 6px 14px;
     border-radius: 20px;
-    border: 1px solid var(--moss);
+    border: 1px solid var(--moss-dk);
     background: transparent;
     color: var(--mist);
-    font-family: 'DM Sans', sans-serif;
+    font-family: 'Inter', 'Helvetica Neue', Helvetica, system-ui, sans-serif;
     font-size: 13px;
     cursor: pointer;
     transition: all 0.2s;
@@ -100,7 +120,7 @@
   .day-tab.active {
     background: var(--amber);
     border-color: var(--amber);
-    color: var(--forest);
+    color: var(--forest-dk);
     font-weight: 500;
   }
 
@@ -121,7 +141,7 @@
     border: 1px solid rgba(200,147,58,0.3);
     background: transparent;
     color: var(--mist);
-    font-family: 'DM Sans', sans-serif;
+    font-family: 'Inter', 'Helvetica Neue', Helvetica, system-ui, sans-serif;
     font-size: 12px;
     cursor: pointer;
     transition: all 0.2s;
@@ -195,7 +215,7 @@
   .act-info { flex: 1; min-width: 0; }
 
   .act-name {
-    font-family: 'Playfair Display', serif;
+    font-family: 'Fraunces', 'Cooper Black', Georgia, serif;
     font-size: 17px;
     font-weight: 700;
     color: var(--cream);
@@ -260,7 +280,7 @@
     position: fixed;
     bottom: 0;
     left: 0; right: 0;
-    background: linear-gradient(0deg, var(--forest) 80%, transparent);
+    background: linear-gradient(0deg, var(--forest-dk) 80%, transparent);
     padding: 10px 0 20px;
     display: flex;
     justify-content: space-around;
@@ -275,7 +295,7 @@
     background: none;
     border: none;
     color: var(--mist);
-    font-family: 'DM Sans', sans-serif;
+    font-family: 'Inter', 'Helvetica Neue', Helvetica, system-ui, sans-serif;
     font-size: 11px;
     cursor: pointer;
     padding: 6px 16px;
@@ -309,7 +329,7 @@
   .stage-dot {
     width: 6px; height: 6px;
     border-radius: 50%;
-    background: var(--moss);
+    background: var(--moss-dk);
     transition: all 0.3s;
   }
   .stage-dot.active {
@@ -338,7 +358,7 @@
 
   /* Stage name banner */
   .stage-banner {
-    font-family: 'Playfair Display', serif;
+    font-family: 'Fraunces', 'Cooper Black', Georgia, serif;
     font-size: 13px;
     font-style: italic;
     color: var(--amber);
@@ -388,7 +408,7 @@
 
   .slot-label.now {
     background: var(--amber);
-    color: var(--forest);
+    color: var(--forest-dk);
   }
 
   .slot-label.next {
@@ -406,7 +426,7 @@
   }
 
   .slot-artist {
-    font-family: 'Playfair Display', serif;
+    font-family: 'Fraunces', 'Cooper Black', Georgia, serif;
     font-size: 22px;
     font-weight: 700;
     color: var(--cream);
@@ -444,7 +464,7 @@
     align-items: center;
     justify-content: center;
     border-radius: 16px;
-    border: 1px dashed var(--moss);
+    border: 1px dashed var(--moss-dk);
     margin-bottom: 12px;
   }
 
@@ -457,7 +477,7 @@
   .swipe-hint {
     text-align: center;
     font-size: 11px;
-    color: var(--moss);
+    color: var(--moss-dk);
     padding: 6px 0;
     letter-spacing: 0.05em;
   }
@@ -473,12 +493,12 @@
   }
 
   .picks-day-header {
-    font-family: 'Playfair Display', serif;
+    font-family: 'Fraunces', 'Cooper Black', Georgia, serif;
     font-size: 18px;
     font-style: italic;
     color: var(--amber);
     padding: 16px 4px 10px;
-    border-bottom: 1px solid var(--moss);
+    border-bottom: 1px solid var(--moss-dk);
     margin-bottom: 10px;
   }
 
@@ -504,7 +524,7 @@
   }
 
   .picks-artist {
-    font-family: 'Playfair Display', serif;
+    font-family: 'Fraunces', 'Cooper Black', Georgia, serif;
     font-size: 15px;
     font-weight: 700;
     color: var(--cream);
