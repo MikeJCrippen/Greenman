@@ -280,31 +280,53 @@
     position: fixed;
     bottom: 0;
     left: 0; right: 0;
-    background: linear-gradient(0deg, var(--forest-dk) 80%, transparent);
-    padding: 10px 0 20px;
     display: flex;
-    justify-content: space-around;
+    gap: 4px;
+    padding: 12px 8px 10px;
+    background: var(--sage-cream);
+    border-top: 1px solid rgba(47,90,68,0.12);
+    box-shadow: 0 -4px 20px -12px rgba(47,90,68,0.25);
     z-index: 100;
   }
 
   .nav-btn {
+    flex: 1;
+    min-height: 56px;
+    padding: 6px 0 4px;
+    background: none;
+    border: none;
+    cursor: pointer;
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 4px;
-    background: none;
-    border: none;
-    color: var(--mist);
     font-family: 'Inter', 'Helvetica Neue', Helvetica, system-ui, sans-serif;
-    font-size: 11px;
-    cursor: pointer;
-    padding: 6px 16px;
-    border-radius: 12px;
-    transition: color 0.2s;
+    font-size: 12px;
+    color: rgba(47,90,68,0.65);
+    font-weight: 500;
+    -webkit-tap-highlight-color: transparent;
+    transition: color 0.18s;
   }
 
-  .nav-btn.active { color: var(--amber); }
-  .nav-icon { font-size: 22px; line-height: 1; }
+  .nav-btn.active {
+    color: var(--forest);
+    font-weight: 600;
+  }
+
+  .nav-pill {
+    width: 64px;
+    height: 32px;
+    border-radius: 16px;
+    background: transparent;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.18s;
+  }
+
+  .nav-btn.active .nav-pill { background: var(--sage); }
+
+  .nav-btn[data-view="picks"].active svg path { fill: currentColor; }
 
   .empty-state { text-align: center; padding: 60px 30px; color: var(--mist); }
   .empty-state .icon { font-size: 48px; margin-bottom: 12px; }
@@ -606,13 +628,29 @@
 <!-- ══════════════ BOTTOM NAV ══════════════ -->
 <nav>
   <button class="nav-btn active" data-view="browse" onclick="switchView('browse')">
-    <span class="nav-icon">🎵</span>Browse
-  </button>
-  <button class="nav-btn" data-view="now" onclick="switchView('now')">
-    <span class="nav-icon">🟢</span>Now & Next
+    <div class="nav-pill">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+        <path d="M4 6h16M4 12h16M4 18h10"/>
+      </svg>
+    </div>
+    <span>Line-up</span>
   </button>
   <button class="nav-btn" data-view="picks" onclick="switchView('picks')">
-    <span class="nav-icon">⭐</span>My Picks
+    <div class="nav-pill">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round">
+        <path d="M12 2 L14.5 8 L21 8.7 L16 13 L17.5 19.5 L12 16.2 L6.5 19.5 L8 13 L3 8.7 L9.5 8 Z"/>
+      </svg>
+    </div>
+    <span>My plan</span>
+  </button>
+  <button class="nav-btn" data-view="now" onclick="switchView('now')">
+    <div class="nav-pill">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+        <circle cx="12" cy="12" r="9"/>
+        <path d="M12 7v5l3.5 2"/>
+      </svg>
+    </div>
+    <span>Now</span>
   </button>
 </nav>
 
