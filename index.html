@@ -45,22 +45,12 @@
 
   body {
     font-family: 'Inter', 'Helvetica Neue', Helvetica, system-ui, sans-serif;
-    background: var(--forest-dk);
-    color: var(--cream);
+    background: var(--sage-mist);
+    color: var(--forest);
     height: 100dvh;
     display: flex;
     flex-direction: column;
     overflow: hidden;
-  }
-
-  body::before {
-    content: '';
-    position: fixed;
-    inset: 0;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
-    pointer-events: none;
-    z-index: 9999;
-    opacity: 0.4;
   }
 
   header {
@@ -574,26 +564,248 @@
     font-size: 14px;
     line-height: 1.7;
   }
+
+  /* ══════════════════════════════════════
+     BROWSE / LINE-UP (2026 design)
+  ══════════════════════════════════════ */
+
+  #view-browse { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+
+  .browse-header {
+    background: var(--sage);
+    color: var(--ink);
+    padding: max(12px, env(safe-area-inset-top)) 20px 0;
+    flex-shrink: 0;
+  }
+
+  .browse-eyebrow {
+    font-family: 'IBM Plex Mono', ui-monospace, Menlo, monospace;
+    font-size: 11px;
+    letter-spacing: 2px;
+    opacity: 0.65;
+    text-transform: uppercase;
+  }
+
+  .browse-titlerow {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-top: 4px;
+    margin-bottom: 18px;
+  }
+
+  h1.browse-h1 {
+    font-family: 'Fraunces', 'Cooper Black', Georgia, serif;
+    font-size: 34px;
+    font-weight: 600;
+    letter-spacing: -0.5px;
+    color: var(--ink);
+    line-height: 1.1;
+  }
+
+  .browse-search-btn {
+    width: 40px; height: 40px;
+    border-radius: 20px;
+    background: rgba(42,34,64,0.08);
+    border: 1px solid rgba(42,34,64,0.15);
+    color: var(--ink);
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  /* Override old day-tab styles */
+  .day-tabs { display: flex; gap: 6px; overflow: visible; padding-bottom: 14px; scrollbar-width: auto; }
+
+  .day-tab {
+    flex: 1;
+    padding: 10px 4px 9px;
+    border: none;
+    cursor: pointer;
+    border-radius: 14px;
+    background: transparent;
+    color: rgba(42,34,64,0.65);
+    display: flex; flex-direction: column; gap: 2px; align-items: center;
+    transition: background .15s;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .day-tab.active { background: var(--ink); color: var(--cream); font-weight: normal; }
+
+  .day-tab-label {
+    font-family: 'IBM Plex Mono', ui-monospace, Menlo, monospace;
+    font-size: 11px; font-weight: 500;
+    text-transform: uppercase; letter-spacing: 0.8px;
+    opacity: 0.75;
+  }
+
+  .day-tab.active .day-tab-label { opacity: 0.55; color: var(--cream); }
+
+  .day-tab-date {
+    font-family: 'Fraunces', 'Cooper Black', Georgia, serif;
+    font-size: 18px; font-weight: 600;
+  }
+
+  .browse-scallop { flex-shrink: 0; line-height: 0; }
+
+  .browse-body {
+    flex: 1;
+    overflow-y: auto;
+    scrollbar-width: none;
+    position: relative;
+    background: var(--sage-mist);
+    padding-bottom: 80px;
+  }
+  .browse-body::-webkit-scrollbar { display: none; }
+
+  /* Stage sections */
+  .stage-section { margin-bottom: 26px; }
+
+  .stage-header {
+    display: flex; align-items: center; gap: 10px;
+    padding: 10px 22px 8px;
+  }
+
+  .stage-dot-2026 {
+    width: 10px; height: 10px;
+    border-radius: 50%; flex-shrink: 0;
+  }
+
+  .stage-name-2026 {
+    font-family: 'Fraunces', 'Cooper Black', Georgia, serif;
+    font-size: 22px; font-weight: 600;
+    color: var(--forest); letter-spacing: -0.3px; white-space: nowrap;
+  }
+
+  .stage-divider-2026 {
+    flex: 1; min-width: 12px;
+    height: 1px; background: rgba(47,90,68,0.2);
+  }
+
+  .stage-count-2026 {
+    font-family: 'IBM Plex Mono', ui-monospace, Menlo, monospace;
+    font-size: 11px; color: rgba(47,90,68,0.6);
+    letter-spacing: 1px; flex-shrink: 0;
+  }
+
+  .stage-card-2026 {
+    margin: 0 16px;
+    background: var(--sage-cream);
+    border-radius: 20px;
+    box-shadow: 0 1px 0 rgba(47,90,68,0.05), 0 8px 24px -18px rgba(47,90,68,0.35);
+    border: 1px solid rgba(47,90,68,0.1);
+    overflow: hidden;
+  }
+
+  /* Lineup rows */
+  .lineup-row {
+    display: flex; align-items: center; gap: 14px;
+    padding: 12px 14px 12px 16px;
+    border-bottom: 1px solid rgba(47,90,68,0.1);
+    transition: opacity 0.15s;
+  }
+  .lineup-row:last-child { border-bottom: none; }
+  .lineup-row.skipped { opacity: 0.45; }
+
+  .lineup-time { width: 46px; flex-shrink: 0; }
+
+  .lineup-time-start {
+    font-family: 'IBM Plex Mono', ui-monospace, Menlo, monospace;
+    font-size: 14px; font-weight: 600; color: var(--forest); line-height: 1.1;
+  }
+
+  .lineup-time-end {
+    font-family: 'IBM Plex Mono', ui-monospace, Menlo, monospace;
+    font-size: 10px; color: rgba(47,90,68,0.55); margin-top: 1px;
+  }
+
+  .lineup-portrait { display: block; flex-shrink: 0; }
+
+  .lineup-info { flex: 1; min-width: 0; }
+
+  .lineup-artist {
+    font-family: 'Fraunces', 'Cooper Black', Georgia, serif;
+    font-size: 16px; font-weight: 600; color: var(--forest);
+    letter-spacing: -0.2px;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+
+  .lineup-rating { display: flex; align-items: center; flex-shrink: 0; }
+
+  .lineup-skip-btn {
+    width: 32px; height: 44px;
+    border: none; background: none; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px; color: rgba(47,90,68,0.3);
+    -webkit-tap-highlight-color: transparent;
+    transition: color 0.15s; padding: 0; border-radius: 8px;
+  }
+  .lineup-skip-btn.skipped { color: var(--stamp); }
+
+  .lineup-star-btn {
+    width: 34px; height: 44px;
+    border: none; background: none; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    -webkit-tap-highlight-color: transparent;
+    padding: 0; border-radius: 8px;
+  }
+
+  .end-of-day {
+    text-align: center;
+    font-family: 'IBM Plex Mono', ui-monospace, Menlo, monospace;
+    font-size: 10px; letter-spacing: 1.5px;
+    color: rgba(47,90,68,0.5); padding: 10px 0 24px;
+  }
 </style>
 </head>
 <body>
 
-<!-- ══════════════ BROWSE VIEW ══════════════ -->
+<!-- ══════════════ BROWSE / LINE-UP VIEW ══════════════ -->
 <div id="view-browse">
-  <header>
-    <div class="header-top">
-      <h1>Green <span>Man</span></h1>
-      <span class="festival-dates">14–17 Aug 2025</span>
+  <div class="browse-header">
+    <div class="browse-eyebrow">GREEN MAN · 14–17 AUG 2025</div>
+    <div class="browse-titlerow">
+      <h1 class="browse-h1">Line-up</h1>
+      <button class="browse-search-btn" aria-label="Search">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+          <circle cx="11" cy="11" r="7"/><path d="M21 21l-4.35-4.35"/>
+        </svg>
+      </button>
     </div>
     <div class="day-tabs" id="day-tabs">
-      <button class="day-tab active" data-day="2025-08-14">Thurs</button>
-      <button class="day-tab" data-day="2025-08-15">Fri</button>
-      <button class="day-tab" data-day="2025-08-16">Sat</button>
-      <button class="day-tab" data-day="2025-08-17">Sun</button>
+      <button class="day-tab active" data-day="2025-08-14">
+        <span class="day-tab-label">THU</span>
+        <span class="day-tab-date">14</span>
+      </button>
+      <button class="day-tab" data-day="2025-08-15">
+        <span class="day-tab-label">FRI</span>
+        <span class="day-tab-date">15</span>
+      </button>
+      <button class="day-tab" data-day="2025-08-16">
+        <span class="day-tab-label">SAT</span>
+        <span class="day-tab-date">16</span>
+      </button>
+      <button class="day-tab" data-day="2025-08-17">
+        <span class="day-tab-label">SUN</span>
+        <span class="day-tab-date">17</span>
+      </button>
     </div>
-  </header>
-  <div class="stage-filter-row" id="stage-pills"></div>
-  <div class="act-list" id="act-list"></div>
+  </div>
+  <div class="browse-scallop">
+    <div style="background:var(--sage);line-height:0">
+      <svg viewBox="0 0 400 14" preserveAspectRatio="none" width="100%" height="14" style="display:block">
+        <path fill="var(--ink)" d="M0 0 L400 0 L400 10 Q390 18 380 10 Q370 2 360 10 Q350 18 340 10 Q330 2 320 10 Q310 18 300 10 Q290 2 280 10 Q270 18 260 10 Q250 2 240 10 Q230 18 220 10 Q210 2 200 10 Q190 18 180 10 Q170 2 160 10 Q150 18 140 10 Q130 2 120 10 Q110 18 100 10 Q90 2 80 10 Q70 18 60 10 Q50 2 40 10 Q30 18 20 10 Q10 2 0 10 Z"/>
+      </svg>
+    </div>
+    <div style="height:6px;background:var(--ink)"></div>
+    <div style="background:var(--ink);line-height:0">
+      <svg viewBox="0 0 400 12" preserveAspectRatio="none" width="100%" height="12" style="display:block;transform:scaleY(-1)">
+        <path fill="var(--sage-mist)" d="M0 0 L400 0 L400 10 Q390 18 380 10 Q370 2 360 10 Q350 18 340 10 Q330 2 320 10 Q310 18 300 10 Q290 2 280 10 Q270 18 260 10 Q250 2 240 10 Q230 18 220 10 Q210 2 200 10 Q190 18 180 10 Q170 2 160 10 Q150 18 140 10 Q130 2 120 10 Q110 18 100 10 Q90 2 80 10 Q70 18 60 10 Q50 2 40 10 Q30 18 20 10 Q10 2 0 10 Z"/>
+      </svg>
+    </div>
+  </div>
+  <div class="browse-body" id="act-list"></div>
 </div>
 
 <!-- ══════════════ NOW & NEXT VIEW ══════════════ -->
@@ -787,6 +999,171 @@ const RATING_CONFIG = {
   1: { emoji: '◦', label: 'Maybe' },
   0: { emoji: '✕', label: 'Skip' },
 };
+
+const STAGE_HUES = {
+  'Mountain Stage':            155,
+  'Far Out':                   95,
+  'Walled Garden':             40,
+  'Rising':                    120,
+  'Chai Wallahs':              60,
+  'Round The Twist':           195,
+  'Babbling Tongues':          270,
+  'Cinedrome':                 25,
+  'Wishbone':                  330,
+  'Rough Trade tent signings': 175,
+};
+
+function buildPortrait(artist, hue, size) {
+  size = size || 44;
+  const initials = artist.split(' ').filter(w => w).slice(0, 2).map(w => w[0]).join('').toUpperCase();
+  const h2 = (hue + 35) % 360;
+  const uid = 'p' + Math.random().toString(36).slice(2, 8);
+  const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+  svg.setAttribute('width', size);
+  svg.setAttribute('height', size);
+  svg.setAttribute('viewBox', '0 0 100 100');
+  svg.classList.add('lineup-portrait');
+  svg.innerHTML = `
+    <defs>
+      <clipPath id="${uid}c"><path d="M 50 2 C 74 2 94 18 96 44 C 98 68 86 92 60 96 C 38 99 12 90 6 66 C 0 42 10 12 50 2 Z"/></clipPath>
+      <linearGradient id="${uid}g" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="oklch(0.72 0.14 ${hue})"/>
+        <stop offset="1" stop-color="oklch(0.42 0.12 ${h2})"/>
+      </linearGradient>
+    </defs>
+    <g clip-path="url(#${uid}c)">
+      <rect width="100" height="100" fill="url(#${uid}g)"/>
+      <circle cx="30" cy="35" r="22" fill="rgba(255,255,255,.08)"/>
+      <circle cx="75" cy="70" r="30" fill="rgba(0,0,0,.14)"/>
+      <text x="50" y="58" text-anchor="middle" font-family="Fraunces, Georgia, serif" font-size="28" fill="rgba(255,255,255,.9)" letter-spacing="1">${initials}</text>
+    </g>
+    <path d="M 50 2 C 74 2 94 18 96 44 C 98 68 86 92 60 96 C 38 99 12 90 6 66 C 0 42 10 12 50 2 Z" fill="none" stroke="rgba(42,34,64,0.35)" stroke-width="1.2"/>
+  `;
+  return svg;
+}
+
+function buildStarSVG(filled) {
+  const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+  svg.setAttribute('width', '18'); svg.setAttribute('height', '18'); svg.setAttribute('viewBox', '0 0 24 24');
+  const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+  path.setAttribute('d', 'M12 2 L14.9 8.9 L22.3 9.6 L16.7 14.6 L18.4 22 L12 18 L5.6 22 L7.3 14.6 L1.7 9.6 L9.1 8.9 Z');
+  path.setAttribute('fill', filled ? 'var(--sun)' : 'none');
+  path.setAttribute('stroke', filled ? 'var(--sun)' : 'rgba(47,90,68,0.25)');
+  path.setAttribute('stroke-width', '1.6');
+  path.setAttribute('stroke-linejoin', 'round');
+  svg.appendChild(path);
+  return svg;
+}
+
+function refreshLineupRow(row, act) {
+  const rating = getRating(act);
+  const isSkip = rating === 0;
+  const isRated = rating !== undefined && rating > 0;
+  row.classList.toggle('skipped', isSkip);
+  const skipBtn = row.querySelector('.lineup-skip-btn');
+  if (skipBtn) skipBtn.classList.toggle('skipped', isSkip);
+  row.querySelectorAll('.lineup-star-btn').forEach((btn, i) => {
+    const path = btn.querySelector('path');
+    if (!path) return;
+    const filled = isRated && (i + 1) <= rating;
+    path.setAttribute('fill', filled ? 'var(--sun)' : 'none');
+    path.setAttribute('stroke', filled ? 'var(--sun)' : 'rgba(47,90,68,0.25)');
+  });
+}
+
+function buildLineupRow(act, hue) {
+  const rating = getRating(act);
+  const isSkip = rating === 0;
+  const isRated = rating !== undefined && rating > 0;
+
+  const row = document.createElement('div');
+  row.className = 'lineup-row' + (isSkip ? ' skipped' : '');
+
+  const timeDiv = document.createElement('div');
+  timeDiv.className = 'lineup-time';
+  timeDiv.innerHTML = `<div class="lineup-time-start">${fmtTime(act.start)}</div><div class="lineup-time-end">${fmtTime(act.end)}</div>`;
+
+  const info = document.createElement('div');
+  info.className = 'lineup-info';
+  info.innerHTML = `<div class="lineup-artist">${act.artist}</div>`;
+
+  const ratingDiv = document.createElement('div');
+  ratingDiv.className = 'lineup-rating';
+
+  const skipBtn = document.createElement('button');
+  skipBtn.className = 'lineup-skip-btn' + (isSkip ? ' skipped' : '');
+  skipBtn.title = 'Skip';
+  skipBtn.textContent = '✕';
+  skipBtn.addEventListener('click', e => {
+    e.stopPropagation();
+    setRating(act, 0);
+    refreshLineupRow(row, act);
+  });
+  ratingDiv.appendChild(skipBtn);
+
+  [1, 2, 3].forEach(n => {
+    const btn = document.createElement('button');
+    btn.className = 'lineup-star-btn';
+    btn.title = n + (n === 1 ? ' star' : ' stars');
+    btn.appendChild(buildStarSVG(isRated && n <= rating));
+    btn.addEventListener('click', e => {
+      e.stopPropagation();
+      setRating(act, n);
+      refreshLineupRow(row, act);
+    });
+    ratingDiv.appendChild(btn);
+  });
+
+  row.appendChild(timeDiv);
+  row.appendChild(buildPortrait(act.artist, hue));
+  row.appendChild(info);
+  row.appendChild(ratingDiv);
+  return row;
+}
+
+function renderLineup() {
+  const container = document.getElementById('act-list');
+  container.innerHTML = '';
+  const inner = document.createElement('div');
+  inner.style.cssText = 'position:relative;z-index:1;padding:14px 0 24px';
+
+  FESTIVAL_DATA.stages.forEach(stageName => {
+    const acts = FESTIVAL_DATA.acts
+      .filter(a => a.day === activeDay && a.stage === stageName)
+      .sort((a, b) => a.start.localeCompare(b.start));
+    if (!acts.length) return;
+    const hue = STAGE_HUES[stageName] || 155;
+
+    const section = document.createElement('section');
+    section.className = 'stage-section';
+
+    const hdr = document.createElement('div');
+    hdr.className = 'stage-header';
+    hdr.innerHTML = `
+      <span class="stage-dot-2026" style="background:oklch(0.55 0.13 ${hue})"></span>
+      <span class="stage-name-2026">${stageName}</span>
+      <div class="stage-divider-2026"></div>
+      <span class="stage-count-2026">${acts.length} set${acts.length !== 1 ? 's' : ''}</span>
+    `;
+    section.appendChild(hdr);
+
+    const card = document.createElement('div');
+    card.className = 'stage-card-2026';
+    acts.forEach(act => card.appendChild(buildLineupRow(act, hue)));
+    section.appendChild(card);
+    inner.appendChild(section);
+  });
+
+  const DAY_LABELS = {
+    '2025-08-14': 'Thu 14 Aug', '2025-08-15': 'Fri 15 Aug',
+    '2025-08-16': 'Sat 16 Aug', '2025-08-17': 'Sun 17 Aug',
+  };
+  const eod = document.createElement('div');
+  eod.className = 'end-of-day';
+  eod.textContent = `· END OF ${(DAY_LABELS[activeDay] || activeDay).toUpperCase()} ·`;
+  inner.appendChild(eod);
+  container.appendChild(inner);
+}
 
 const STAGE_GRADIENTS = {
   'Mountain Stage':            'linear-gradient(160deg, #1a3a1a 0%, #2d5a2d 100%)',
@@ -1127,9 +1504,7 @@ document.getElementById('day-tabs').addEventListener('click', e => {
   activeDay = tab.dataset.day;
   document.querySelectorAll('.day-tab').forEach(t => t.classList.remove('active'));
   tab.classList.add('active');
-  activeStage = 'all';
-  buildStagePills();
-  renderActList();
+  renderLineup();
 });
 
 // Auto-refresh Now & Next every minute
@@ -1140,8 +1515,7 @@ setInterval(() => { if (currentView === 'now') renderNowNext(); }, 60000);
 // ══════════════════════════════════════════
 loadState();
 initCarouselSwipe();
-buildStagePills();
-renderActList();
+renderLineup();
 switchView('browse');
 </script>
 </body>
