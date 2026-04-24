@@ -1236,7 +1236,13 @@ const NOW_NEXT_STAGES = ['Mountain Stage', 'Far Out', 'Walled Garden'];
 
 function loadState() {
   try { ratings    = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}'); } catch(e) { ratings = {}; }
-  try { photoCache = JSON.parse(localStorage.getItem(PHOTO_CACHE_KEY) || '{}'); } catch(e) { photoCache = {}; }
+  try {
+    const stored = JSON.parse(localStorage.getItem(PHOTO_CACHE_KEY) || '{}');
+    // Wipe cache if it contains Last.fm placeholder URLs from before the fix
+    const hasPlaceholders = Object.values(stored).some(v => v && v.includes('2a96cbd8b46e442fc41c2b86b821562f'));
+    photoCache = hasPlaceholders ? {} : stored;
+    if (hasPlaceholders) savePhotoCache();
+  } catch(e) { photoCache = {}; }
 }
 
 function saveRatings()    { localStorage.setItem(STORAGE_KEY, JSON.stringify(ratings)); }
@@ -1272,8 +1278,9 @@ async function fetchArtistPhoto(artist) {
     // Last.fm returns array of sizes; grab 'extralarge' or 'large'
     const img = images?.find(i => i.size === 'extralarge') || images?.find(i => i.size === 'large');
     const src = img?.['#text'] || null;
-    // Last.fm sometimes returns an empty string for missing images
-    photoCache[artist] = (src && src.length > 10) ? src : null;
+    // Last.fm returns a generic placeholder for artists with no image — filter it out
+    const isPlaceholder = src && src.includes('2a96cbd8b46e442fc41c2b86b821562f');
+    photoCache[artist] = (src && src.length > 10 && !isPlaceholder) ? src : null;
     savePhotoCache();
     // Update any visible cards for this artist
     updateCardPhoto();
