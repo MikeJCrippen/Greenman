@@ -902,6 +902,164 @@
     font-family: 'Inter', 'Helvetica Neue', Helvetica, system-ui, sans-serif;
     font-size: 14px; color: rgba(47,90,68,0.65); line-height: 1.5;
   }
+
+  /* ══════════════════════════════════════
+     NOW & NEXT 2026 REDESIGN
+  ══════════════════════════════════════ */
+  @keyframes gm-pulse {
+    0%, 100% { box-shadow: 0 0 0 3px rgba(232,169,74,0.25); }
+    50%       { box-shadow: 0 0 0 6px rgba(232,169,74,0.10); }
+  }
+  .live-pulse {
+    display: inline-block;
+    width: 7px; height: 7px; border-radius: 4px;
+    background: var(--sun);
+    margin-right: 6px;
+    box-shadow: 0 0 0 3px rgba(232,169,74,0.25);
+    vertical-align: middle;
+    animation: gm-pulse 1.6s infinite ease-in-out;
+  }
+  #view-now { background: var(--forest) !important; color: var(--cream); }
+  .now-header {
+    padding: 52px 20px 14px;
+    flex-shrink: 0;
+    position: relative; z-index: 5;
+  }
+  .now-meta-row {
+    display: flex; align-items: flex-start;
+    justify-content: space-between; gap: 10px;
+  }
+  .now-eyebrow {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px; letter-spacing: 2px; opacity: 0.65; text-transform: uppercase;
+  }
+  .now-title {
+    font-family: 'Fraunces', Georgia, serif;
+    font-size: 30px; font-weight: 600; letter-spacing: -0.4px; margin-top: 2px;
+  }
+  .now-scrubber {
+    background: rgba(255,255,255,0.08); color: var(--cream);
+    border: 1px solid rgba(255,255,255,0.18); border-radius: 12px;
+    padding: 8px 10px; font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px; letter-spacing: 0.5px; flex-shrink: 0; margin-top: 4px; cursor: pointer;
+  }
+  .now-stage-tabs {
+    display: flex; gap: 6px; margin-top: 14px;
+    padding: 4px; background: rgba(255,255,255,0.06); border-radius: 14px;
+  }
+  .now-stage-tab {
+    flex: 1; padding: 9px 4px; border: none; border-radius: 10px; cursor: pointer;
+    background: transparent; color: rgba(244,234,216,0.65);
+    font-family: 'Inter', sans-serif; font-weight: 600; font-size: 12px;
+    display: flex; align-items: center; justify-content: center; gap: 5px;
+    transition: background 0.15s, color 0.15s;
+  }
+  .now-stage-tab.active { background: var(--cream); color: var(--ink); }
+  .now-tab-dot { width: 7px; height: 7px; border-radius: 4px; flex-shrink: 0; }
+  /* Carousel slides */
+  .stage-slide {
+    position: absolute !important;
+    inset: 0 !important;
+    flex: unset !important;
+    overflow-y: auto;
+    padding: 0 18px 36px;
+    scrollbar-width: none;
+  }
+  .stage-slide::-webkit-scrollbar { display: none; }
+  /* Hero card */
+  .now-hero-card {
+    position: relative; border-radius: 22px; overflow: hidden;
+    margin-top: 8px; aspect-ratio: 3/4;
+  }
+  .now-hero-bg { position: absolute; inset: 0; }
+  .now-hero-portrait-wrap {
+    position: absolute; inset: 0;
+    display: flex; align-items: center; justify-content: center; overflow: hidden;
+  }
+  .now-hero-grad {
+    position: absolute; inset: 0;
+    background: linear-gradient(to bottom, rgba(29,56,42,0) 30%, rgba(20,36,28,0.88) 100%);
+  }
+  .now-hero-top {
+    position: absolute; top: 14px; left: 14px; right: 14px;
+    display: flex; align-items: center; justify-content: space-between; z-index: 2;
+  }
+  .now-on-now-chip {
+    display: flex; align-items: center; gap: 8px;
+    padding: 7px 11px; background: rgba(20,36,28,0.6);
+    backdrop-filter: blur(8px); border-radius: 999px;
+    border: 1px solid rgba(255,255,255,0.12);
+    font-family: 'IBM Plex Mono', monospace; font-size: 10px;
+    font-weight: 700; letter-spacing: 1.5px; color: var(--cream);
+  }
+  .now-stage-name-chip {
+    font-family: 'IBM Plex Mono', monospace; font-size: 10px;
+    padding: 6px 10px; background: rgba(20,36,28,0.6);
+    border-radius: 999px; color: var(--cream); letter-spacing: 1px;
+  }
+  .now-hero-bottom {
+    position: absolute; left: 18px; right: 18px; bottom: 18px; z-index: 2;
+  }
+  .now-hero-meta-line {
+    font-family: 'IBM Plex Mono', monospace; font-size: 11px;
+    color: rgba(244,234,216,0.7); letter-spacing: 1px; margin-bottom: 4px;
+  }
+  .now-hero-artist {
+    font-family: 'Fraunces', Georgia, serif; font-size: 28px;
+    font-weight: 700; color: var(--cream); letter-spacing: -0.5px; line-height: 1.05;
+  }
+  .now-progress-track {
+    height: 4px; background: rgba(255,255,255,0.15);
+    border-radius: 2px; margin-top: 14px; overflow: hidden; position: relative;
+  }
+  .now-progress-fill { position: absolute; left: 0; top: 0; bottom: 0; border-radius: 2px; }
+  .now-hero-footer {
+    display: flex; align-items: center; justify-content: space-between; margin-top: 10px;
+  }
+  .now-mins-left {
+    font-family: 'IBM Plex Mono', monospace; font-size: 10px;
+    color: rgba(244,234,216,0.6); letter-spacing: 1px;
+  }
+  /* Up next */
+  .now-up-next-section { margin-top: 20px; }
+  .now-up-next-label {
+    font-family: 'IBM Plex Mono', monospace; font-size: 10px;
+    letter-spacing: 2px; color: rgba(244,234,216,0.55); margin-bottom: 8px; padding-left: 4px;
+  }
+  .now-up-next-card {
+    display: flex; gap: 14px; padding: 14px;
+    background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.10);
+    border-radius: 16px; align-items: center;
+  }
+  .now-up-next-info { flex: 1; min-width: 0; }
+  .now-up-next-time {
+    font-family: 'IBM Plex Mono', monospace; font-size: 11px;
+    letter-spacing: 1px; font-weight: 600;
+  }
+  .now-up-next-artist {
+    font-family: 'Fraunces', Georgia, serif; font-size: 20px;
+    font-weight: 600; color: var(--cream); letter-spacing: -0.3px; margin-top: 2px;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  .now-stage-dark {
+    border-radius: 22px; padding: 30px 20px;
+    background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.10);
+    margin-top: 8px; text-align: center;
+    font-family: 'Fraunces', Georgia, serif; font-size: 20px; color: var(--cream);
+  }
+  .now-nothing-next {
+    padding: 16px 14px; background: rgba(255,255,255,0.03);
+    border: 1px dashed rgba(255,255,255,0.15); border-radius: 16px;
+    font-family: 'Inter', sans-serif; font-size: 13px; color: rgba(244,234,216,0.5);
+  }
+  /* Swipe dots */
+  .now-swipe-dots {
+    display: flex; justify-content: center; gap: 6px;
+    padding: 8px 0 4px; flex-shrink: 0; pointer-events: none;
+  }
+  .now-swipe-dot { height: 5px; border-radius: 3px; transition: all 0.25s; background: rgba(244,234,216,0.3); }
+  .now-swipe-dot.active { width: 18px; background: var(--cream); }
+  .now-swipe-dot:not(.active) { width: 5px; }
 </style>
 </head>
 <body>
@@ -955,21 +1113,26 @@
 
 <!-- ══════════════ NOW & NEXT VIEW ══════════════ -->
 <div id="view-now">
-  <header>
-    <div class="header-top">
-      <h1>Now <span>& Next</span></h1>
+  <div class="now-header">
+    <div class="now-meta-row">
+      <div>
+        <div class="now-eyebrow" id="now-eyebrow"></div>
+        <div class="now-title">On site</div>
+      </div>
+      <select class="now-scrubber" id="now-scrubber" onchange="onNowScrubberChange(this.value)">
+        <option value="fri-afternoon">Fri 16:45</option>
+        <option value="sat-evening" selected>Sat 19:50</option>
+        <option value="sun-night">Sun 21:30</option>
+      </select>
     </div>
-    <div class="stage-dots" id="stage-dots">
-      <span class="stage-dot active"></span>
-      <span class="stage-dot"></span>
-      <span class="stage-dot"></span>
-    </div>
-  </header>
+    <div class="now-stage-tabs" id="now-stage-tabs"></div>
+  </div>
   <div class="stage-carousel" id="stage-carousel">
     <div class="stage-slide" id="slide-0"></div>
     <div class="stage-slide" id="slide-1"></div>
     <div class="stage-slide" id="slide-2"></div>
   </div>
+  <div class="now-swipe-dots" id="now-swipe-dots"></div>
 </div>
 
 <!-- ══════════════ ITINERARY / MY PLAN VIEW ══════════════ -->
@@ -1043,10 +1206,20 @@ const LASTFM_API_KEY = '';
 // ── Dev mode: simulates being at the festival ─────────
 // Set DEV_MODE to false when using at the actual festival
 const DEV_MODE = true;
-const DEV_TIME = '2025-08-15T19:00:00'; // Friday evening
+const DEV_TIMES = {
+  'fri-afternoon': '2025-08-15T16:45:00',
+  'sat-evening':   '2025-08-16T19:50:00',
+  'sun-night':     '2025-08-17T21:30:00',
+};
+let devTimeMode = 'sat-evening';
 
 function getNow() {
-  return DEV_MODE ? new Date(DEV_TIME) : new Date();
+  return DEV_MODE ? new Date(DEV_TIMES[devTimeMode]) : new Date();
+}
+
+function onNowScrubberChange(val) {
+  devTimeMode = val;
+  if (currentView === 'now') renderNowNext();
 }
 // ─────────────────────────────────────────────────────
 
@@ -1478,93 +1651,212 @@ let touchStartY = 0;
 
 function renderNowNext() {
   const now = getNow();
-  NOW_NEXT_STAGES.forEach((stage, i) => {
+  const nowMs = now.getTime();
+  const DAY_SHORTS = { '14': 'THU', '15': 'FRI', '16': 'SAT', '17': 'SUN' };
+
+  // Eyebrow: "● NOW · SAT 19:50"
+  const eyebrow = document.getElementById('now-eyebrow');
+  if (eyebrow) {
+    const dayLabel = DAY_SHORTS[String(now.getDate())] || '';
+    const hh = String(now.getHours()).padStart(2, '0');
+    const mm = String(now.getMinutes()).padStart(2, '0');
+    eyebrow.innerHTML = `<span class="live-pulse"></span> Now · ${dayLabel} ${hh}:${mm}`;
+  }
+
+  // Stage tabs
+  const tabsEl = document.getElementById('now-stage-tabs');
+  if (tabsEl) {
+    tabsEl.innerHTML = '';
+    NOW_NEXT_STAGES.forEach((stageName, i) => {
+      const hue = STAGE_HUES[stageName] || 155;
+      const btn = document.createElement('button');
+      btn.className = 'now-stage-tab' + (i === carouselIdx ? ' active' : '');
+      const dot = document.createElement('span');
+      dot.className = 'now-tab-dot';
+      dot.style.background = `oklch(0.65 0.14 ${hue})`;
+      btn.appendChild(dot);
+      btn.appendChild(document.createTextNode(STAGE_SHORT[stageName] || stageName));
+      btn.addEventListener('click', () => { carouselIdx = i; renderNowNext(); updateCarousel(); });
+      tabsEl.appendChild(btn);
+    });
+  }
+
+  // Swipe dots
+  const dotsEl = document.getElementById('now-swipe-dots');
+  if (dotsEl) {
+    dotsEl.innerHTML = '';
+    NOW_NEXT_STAGES.forEach((_, i) => {
+      const d = document.createElement('div');
+      d.className = 'now-swipe-dot' + (i === carouselIdx ? ' active' : '');
+      dotsEl.appendChild(d);
+    });
+  }
+
+  // Slides
+  NOW_NEXT_STAGES.forEach((stageName, i) => {
     const slide = document.getElementById(`slide-${i}`);
     slide.innerHTML = '';
-
-    const banner = document.createElement('div');
-    banner.className = 'stage-banner';
-    banner.textContent = stage;
-    slide.appendChild(banner);
+    slide.style.transform = `translateX(${(i - carouselIdx) * 100}%)`;
+    slide.style.transition = 'transform 0.35s cubic-bezier(0.2,0.8,0.2,1)';
 
     const stageActs = FESTIVAL_DATA.acts
-      .filter(a => a.stage === stage)
+      .filter(a => a.stage === stageName)
       .sort((a, b) => a.start.localeCompare(b.start));
 
     const onNow  = stageActs.find(a => new Date(a.start) <= now && new Date(a.end) > now);
     const onNext = stageActs.find(a => new Date(a.start) > now);
 
     if (!onNow && !onNext) {
-      const el = document.createElement('div');
-      el.className = 'slot-nothing';
-      el.innerHTML = '<p>Nothing on at this stage right now</p>';
-      slide.appendChild(el);
+      const dark = document.createElement('div');
+      dark.className = 'now-stage-dark';
+      dark.innerHTML = 'Stage is dark<div style="font-family:Inter,sans-serif;font-size:13px;color:rgba(244,234,216,0.6);margin-top:6px">Nothing playing here right now.</div>';
+      slide.appendChild(dark);
     } else {
-      if (onNow)  slide.appendChild(buildSlotCard(onNow,  true,  now));
-      if (onNext) slide.appendChild(buildSlotCard(onNext, false, now));
-    }
-
-    // Swipe hint only on first slide
-    if (i === 0) {
-      const hint = document.createElement('div');
-      hint.className = 'swipe-hint';
-      hint.textContent = '← swipe to see other stages →';
-      slide.appendChild(hint);
+      if (onNow) slide.appendChild(buildNowHeroCard(onNow, stageName, nowMs));
+      const section = document.createElement('div');
+      section.className = 'now-up-next-section';
+      const label = document.createElement('div');
+      label.className = 'now-up-next-label';
+      label.textContent = 'UP NEXT';
+      section.appendChild(label);
+      if (onNext) {
+        section.appendChild(buildNowUpNextCard(onNext, stageName, nowMs));
+      } else {
+        const nothing = document.createElement('div');
+        nothing.className = 'now-nothing-next';
+        nothing.textContent = 'Nothing else scheduled here today.';
+        section.appendChild(nothing);
+      }
+      slide.appendChild(section);
     }
   });
-
-  updateCarousel();
 }
 
-function buildSlotCard(act, isNow, now) {
+function buildNowHeroCard(act, stageName, nowMs) {
+  const hue = STAGE_HUES[stageName] || 155;
+  const stageColor = `oklch(0.65 0.14 ${hue})`;
+  const startMs = new Date(act.start).getTime();
+  const endMs   = new Date(act.end).getTime();
+  const pct     = Math.max(0, Math.min(1, (nowMs - startMs) / (endMs - startMs)));
+  const minsLeft = Math.max(0, Math.round((endMs - nowMs) / 60000));
+  const rating  = getRating(act);
+  const isRated = rating !== undefined && rating > 0;
+
   const card = document.createElement('div');
-  card.className = 'slot-card';
+  card.className = 'now-hero-card';
 
   const bg = document.createElement('div');
-  bg.className = 'slot-card-bg';
-  const photo = getPhoto(act.artist);
-  if (photo) {
-    bg.style.backgroundImage = `url('${photo}')`;
-    bg.style.backgroundSize = 'cover';
-    bg.style.backgroundPosition = 'center top';
-  } else {
-    bg.style.background = STAGE_GRADIENTS[act.stage] || STAGE_GRADIENTS['Mountain Stage'];
-  }
+  bg.className = 'now-hero-bg';
+  bg.style.background = `linear-gradient(160deg, oklch(0.45 0.11 ${hue}), oklch(0.22 0.06 155))`;
   card.appendChild(bg);
 
-  const label = document.createElement('div');
-  label.className = `slot-label ${isNow ? 'now' : 'next'}`;
-  label.textContent = isNow ? '● Live now' : 'Up next';
-  card.appendChild(label);
+  const pw = document.createElement('div');
+  pw.className = 'now-hero-portrait-wrap';
+  const portrait = buildPortrait(act.artist, hue, 120);
+  portrait.style.transform = 'scale(2.4) translateY(-14%)';
+  pw.appendChild(portrait);
+  card.appendChild(pw);
 
-  const rating = getRating(act);
-  let pipHtml = '';
-  if (rating !== undefined && rating > 0) {
-    pipHtml = `<span class="rating-pip pip-${rating}"></span>`;
-  }
+  const grad = document.createElement('div');
+  grad.className = 'now-hero-grad';
+  card.appendChild(grad);
 
-  const content = document.createElement('div');
-  content.className = 'slot-content';
-  content.innerHTML = `
-    <div class="slot-artist">${act.artist}</div>
-    <div class="slot-meta">
-      ${pipHtml}
-      <span>${fmtTime(act.start)}–${fmtTime(act.end)}</span>
-      <span class="slot-timer">${isNow ? fmtMinsRemaining(act.end) : fmtMinsUntil(act.start)}</span>
-    </div>
-  `;
-  card.appendChild(content);
+  const top = document.createElement('div');
+  top.className = 'now-hero-top';
+  top.innerHTML = `<div class="now-on-now-chip"><span class="live-pulse"></span> ON NOW</div>
+    <div class="now-stage-name-chip">${stageName.toUpperCase()}</div>`;
+  card.appendChild(top);
+
+  const bottom = document.createElement('div');
+  bottom.className = 'now-hero-bottom';
+
+  const meta = document.createElement('div');
+  meta.className = 'now-hero-meta-line';
+  meta.textContent = `${fmtTime(act.start)} — ${fmtTime(act.end)}`;
+  bottom.appendChild(meta);
+
+  const artist = document.createElement('div');
+  artist.className = 'now-hero-artist';
+  artist.textContent = act.artist;
+  bottom.appendChild(artist);
+
+  const track = document.createElement('div');
+  track.className = 'now-progress-track';
+  const fill = document.createElement('div');
+  fill.className = 'now-progress-fill';
+  fill.style.width = `${pct * 100}%`;
+  fill.style.background = stageColor;
+  track.appendChild(fill);
+  bottom.appendChild(track);
+
+  const footer = document.createElement('div');
+  footer.className = 'now-hero-footer';
+  const starsRow = document.createElement('div');
+  starsRow.style.cssText = 'display:flex;gap:0';
+  [1, 2, 3].forEach(n => {
+    const btn = document.createElement('button');
+    btn.className = 'lineup-star-btn';
+    btn.appendChild(buildStarSVG(isRated && n <= rating));
+    btn.addEventListener('click', e => { e.stopPropagation(); setRating(act, n); renderNowNext(); });
+    starsRow.appendChild(btn);
+  });
+  footer.appendChild(starsRow);
+  const minsDiv = document.createElement('div');
+  minsDiv.className = 'now-mins-left';
+  minsDiv.textContent = `${minsLeft} MIN LEFT`;
+  footer.appendChild(minsDiv);
+  bottom.appendChild(footer);
+  card.appendChild(bottom);
   return card;
 }
 
+function buildNowUpNextCard(act, stageName, nowMs) {
+  const hue = STAGE_HUES[stageName] || 155;
+  const stageColor = `oklch(0.65 0.14 ${hue})`;
+  const minsUntil = Math.max(0, Math.round((new Date(act.start).getTime() - nowMs) / 60000));
+  const rating  = getRating(act);
+  const isRated = rating !== undefined && rating > 0;
+
+  const card = document.createElement('div');
+  card.className = 'now-up-next-card';
+
+  card.appendChild(buildPortrait(act.artist, hue, 64));
+
+  const info = document.createElement('div');
+  info.className = 'now-up-next-info';
+  const timeDiv = document.createElement('div');
+  timeDiv.className = 'now-up-next-time';
+  timeDiv.style.color = stageColor;
+  timeDiv.textContent = `${fmtTime(act.start)} · IN ${minsUntil} MIN`;
+  info.appendChild(timeDiv);
+  const artistDiv = document.createElement('div');
+  artistDiv.className = 'now-up-next-artist';
+  artistDiv.textContent = act.artist;
+  info.appendChild(artistDiv);
+  card.appendChild(info);
+
+  const starsRow = document.createElement('div');
+  starsRow.style.cssText = 'display:flex;gap:0;align-self:center';
+  [1, 2, 3].forEach(n => {
+    const btn = document.createElement('button');
+    btn.className = 'lineup-star-btn';
+    btn.appendChild(buildStarSVG(isRated && n <= rating));
+    btn.addEventListener('click', e => { e.stopPropagation(); setRating(act, n); renderNowNext(); });
+    starsRow.appendChild(btn);
+  });
+  card.appendChild(starsRow);
+  return card;
+}
+
+// Legacy — superseded by buildNowHeroCard / buildNowUpNextCard
+function buildSlotCard(act, isNow, now) { return document.createElement('div'); }
+
 function updateCarousel() {
-  const slides = document.querySelectorAll('.stage-slide');
-  slides.forEach((slide, i) => {
+  document.querySelectorAll('.stage-slide').forEach((slide, i) => {
     slide.style.transform = `translateX(${(i - carouselIdx) * 100}%)`;
   });
-  document.querySelectorAll('.stage-dot').forEach((dot, i) => {
-    dot.classList.toggle('active', i === carouselIdx);
-  });
+  document.querySelectorAll('.now-swipe-dot').forEach((d, i) => d.classList.toggle('active', i === carouselIdx));
+  document.querySelectorAll('.now-stage-tab').forEach((t, i) => t.classList.toggle('active', i === carouselIdx));
 }
 
 function initCarouselSwipe() {
