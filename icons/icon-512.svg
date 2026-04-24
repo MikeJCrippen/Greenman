@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <rect width="512" height="512" rx="104" fill="#2f5a44"></rect>
+  <g transform="translate(0,20)">
+    <path d="M256 90c74 0 134 60 134 128s-60 128-134 128S122 286 122 218 182 90 256 90z" fill="#8cc0a0"></path>
+    <path d="M256 138c-36 0-58 32-58 58 0 16 10 32 26 38-10 10-16 26-16 42 26-16 48-16 62-4 10-10 22-26 22-48 0-26-16-86-36-86z" fill="#2f5a44"></path>
+  </g>
+  <text x="256" y="460" text-anchor="middle" font-family="Georgia, serif" font-weight="700" font-size="56" fill="#f5efe0" letter-spacing="4">GREEN MAN</text>
+</svg>
