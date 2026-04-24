@@ -1241,6 +1241,19 @@ function loadState() {
 function saveRatings()    { localStorage.setItem(STORAGE_KEY, JSON.stringify(ratings)); }
 function savePhotoCache() { localStorage.setItem(PHOTO_CACHE_KEY, JSON.stringify(photoCache)); }
 
+// Debug helpers — call from browser console
+function resetPhotos() {
+  photoCache = {};
+  savePhotoCache();
+  updateCardPhoto();
+  console.log('Photo cache cleared — rate an act to re-fetch.');
+}
+function resetAll() {
+  localStorage.removeItem(STORAGE_KEY);
+  localStorage.removeItem(PHOTO_CACHE_KEY);
+  location.reload();
+}
+
 function actKey(act) { return `${act.stage}||${act.start}`; }
 function getRating(act) { return ratings[actKey(act)]; }
 
