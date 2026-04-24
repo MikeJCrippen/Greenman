@@ -757,6 +757,151 @@
     font-size: 10px; letter-spacing: 1.5px;
     color: rgba(47,90,68,0.5); padding: 10px 0 24px;
   }
+
+  /* ══════════════════════════════════════
+     ITINERARY / MY PLAN (2026 design)
+  ══════════════════════════════════════ */
+
+  #view-picks { flex: 1; overflow: hidden; }
+
+  .itin-header {
+    background: var(--forest);
+    color: var(--cream);
+    padding: max(12px, env(safe-area-inset-top)) 20px 0;
+    flex-shrink: 0;
+  }
+
+  .itin-eyebrow {
+    font-family: 'IBM Plex Mono', ui-monospace, Menlo, monospace;
+    font-size: 11px; letter-spacing: 2px; opacity: 0.7; text-transform: uppercase;
+  }
+
+  .itin-titlerow {
+    display: flex; align-items: flex-start;
+    justify-content: space-between;
+    margin-top: 4px; margin-bottom: 16px;
+  }
+
+  h1.itin-h1 {
+    font-family: 'Fraunces', 'Cooper Black', Georgia, serif;
+    font-size: 34px; font-weight: 600;
+    letter-spacing: -0.5px; color: var(--cream); line-height: 1.1;
+  }
+
+  .itin-share-btn {
+    width: 40px; height: 40px; border-radius: 20px;
+    background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2);
+    color: var(--cream); cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0; -webkit-tap-highlight-color: transparent;
+  }
+
+  .itin-chips { display: flex; gap: 10px; margin-bottom: 16px; }
+
+  .itin-chip {
+    flex: 1; background: rgba(255,255,255,0.10);
+    border: 1px solid rgba(255,255,255,0.18);
+    padding: 8px 10px; border-radius: 12px;
+  }
+
+  .itin-chip.warn { background: rgba(201,77,77,0.28); border-color: rgba(232,168,168,0.5); }
+
+  .itin-chip-label {
+    font-family: 'IBM Plex Mono', ui-monospace, Menlo, monospace;
+    font-size: 10px; letter-spacing: 1.2px; opacity: 0.75; text-transform: uppercase;
+  }
+
+  .itin-chip-value {
+    font-family: 'Fraunces', 'Cooper Black', Georgia, serif;
+    font-size: 20px; font-weight: 600; margin-top: 1px; color: var(--cream);
+  }
+
+  .itin-chip.warn .itin-chip-value { color: var(--blush); }
+
+  .itin-scallop { flex-shrink: 0; line-height: 0; }
+
+  .itin-body {
+    flex: 1; overflow-y: auto; scrollbar-width: none;
+    background: var(--sage-mist); padding: 14px 0 80px;
+  }
+  .itin-body::-webkit-scrollbar { display: none; }
+
+  .itin-day-group { margin-bottom: 22px; }
+
+  .itin-day-header {
+    padding: 8px 22px 10px;
+    display: flex; align-items: baseline; gap: 8px;
+  }
+
+  .itin-day-name {
+    font-family: 'Fraunces', 'Cooper Black', Georgia, serif;
+    font-size: 22px; font-weight: 600; color: var(--forest); letter-spacing: -0.3px;
+  }
+
+  .itin-day-date {
+    font-family: 'IBM Plex Mono', ui-monospace, Menlo, monospace;
+    font-size: 11px; color: rgba(47,90,68,0.6); letter-spacing: 1px;
+  }
+
+  .itin-gap {
+    padding: 6px 0 6px 6px;
+    font-family: 'IBM Plex Mono', ui-monospace, Menlo, monospace;
+    font-size: 10px; color: rgba(47,90,68,0.55); letter-spacing: 1px;
+  }
+
+  .itin-card {
+    position: relative; background: var(--sage-cream);
+    border-radius: 16px; padding: 14px 14px 14px 18px; margin-bottom: 10px;
+    border: 1px solid rgba(47,90,68,0.12);
+    box-shadow: 0 4px 18px -14px rgba(47,90,68,0.3); overflow: hidden;
+  }
+
+  .itin-card.clash {
+    border-color: rgba(201,77,77,0.4);
+    box-shadow: 0 0 0 1px rgba(201,77,77,0.12), 0 6px 20px -14px rgba(201,77,77,0.5);
+  }
+
+  .itin-rail { position: absolute; left: 0; top: 0; bottom: 0; width: 4px; }
+
+  .itin-card-inner { display: flex; align-items: center; gap: 12px; }
+
+  .itin-meta { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; margin-bottom: 3px; }
+
+  .itin-time {
+    font-family: 'IBM Plex Mono', ui-monospace, Menlo, monospace;
+    font-size: 12px; font-weight: 600; color: var(--forest);
+  }
+
+  .itin-stage-pill {
+    font-family: 'IBM Plex Mono', ui-monospace, Menlo, monospace;
+    font-size: 10px; padding: 2px 6px; border-radius: 4px;
+    background: rgba(47,90,68,0.12); color: var(--forest); letter-spacing: 0.5px;
+  }
+
+  .itin-clash-pill {
+    font-family: 'IBM Plex Mono', ui-monospace, Menlo, monospace;
+    font-size: 10px; font-weight: 700;
+    padding: 2px 6px; border-radius: 4px;
+    background: var(--stamp); color: #fff; letter-spacing: 0.8px;
+  }
+
+  .itin-artist {
+    font-family: 'Fraunces', 'Cooper Black', Georgia, serif;
+    font-size: 18px; font-weight: 600; color: var(--forest); letter-spacing: -0.2px;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+
+  .itin-empty { padding: 60px 40px; text-align: center; }
+
+  .itin-empty-title {
+    font-family: 'Fraunces', 'Cooper Black', Georgia, serif;
+    font-size: 22px; color: var(--forest); margin-bottom: 8px;
+  }
+
+  .itin-empty-sub {
+    font-family: 'Inter', 'Helvetica Neue', Helvetica, system-ui, sans-serif;
+    font-size: 14px; color: rgba(47,90,68,0.65); line-height: 1.5;
+  }
 </style>
 </head>
 <body>
@@ -827,14 +972,35 @@
   </div>
 </div>
 
-<!-- ══════════════ PICKS VIEW ══════════════ -->
+<!-- ══════════════ ITINERARY / MY PLAN VIEW ══════════════ -->
 <div id="view-picks">
-  <header>
-    <div class="header-top">
-      <h1>My <span>Picks</span></h1>
+  <div class="itin-header">
+    <div class="itin-eyebrow">MY PLAN</div>
+    <div class="itin-titlerow">
+      <h1 class="itin-h1">Itinerary</h1>
+      <button class="itin-share-btn" aria-label="Share">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+          <path d="M4 12v7a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-7"/>
+          <path d="M16 6l-4-4-4 4"/><path d="M12 2v13"/>
+        </svg>
+      </button>
     </div>
-  </header>
-  <div class="act-list" id="picks-list"></div>
+    <div class="itin-chips" id="itin-chips"></div>
+  </div>
+  <div class="itin-scallop">
+    <div style="background:var(--forest);line-height:0">
+      <svg viewBox="0 0 400 14" preserveAspectRatio="none" width="100%" height="10" style="display:block">
+        <path fill="var(--ink)" d="M0 0 L400 0 L400 10 Q390 18 380 10 Q370 2 360 10 Q350 18 340 10 Q330 2 320 10 Q310 18 300 10 Q290 2 280 10 Q270 18 260 10 Q250 2 240 10 Q230 18 220 10 Q210 2 200 10 Q190 18 180 10 Q170 2 160 10 Q150 18 140 10 Q130 2 120 10 Q110 18 100 10 Q90 2 80 10 Q70 18 60 10 Q50 2 40 10 Q30 18 20 10 Q10 2 0 10 Z"/>
+      </svg>
+    </div>
+    <div style="height:4px;background:var(--ink)"></div>
+    <div style="background:var(--ink);line-height:0">
+      <svg viewBox="0 0 400 12" preserveAspectRatio="none" width="100%" height="12" style="display:block;transform:scaleY(-1)">
+        <path fill="var(--sage-mist)" d="M0 0 L400 0 L400 10 Q390 18 380 10 Q370 2 360 10 Q350 18 340 10 Q330 2 320 10 Q310 18 300 10 Q290 2 280 10 Q270 18 260 10 Q250 2 240 10 Q230 18 220 10 Q210 2 200 10 Q190 18 180 10 Q170 2 160 10 Q150 18 140 10 Q130 2 120 10 Q110 18 100 10 Q90 2 80 10 Q70 18 60 10 Q50 2 40 10 Q30 18 20 10 Q10 2 0 10 Z"/>
+      </svg>
+    </div>
+  </div>
+  <div class="itin-body" id="picks-list"></div>
 </div>
 
 <!-- ══════════════ BOTTOM NAV ══════════════ -->
@@ -1422,7 +1588,163 @@ function initCarouselSwipe() {
 }
 
 // ══════════════════════════════════════════
-// MY PICKS VIEW
+// ITINERARY VIEW (2026 design)
+// ══════════════════════════════════════════
+const STAGE_SHORT = {
+  'Mountain Stage': 'Mountain', 'Far Out': 'Far Out', 'Walled Garden': 'Walled',
+  'Rising': 'Rising', 'Chai Wallahs': 'Chai', 'Round The Twist': 'Round',
+  'Babbling Tongues': 'Babbling', 'Cinedrome': 'Cinema',
+  'Wishbone': 'Wishbone', 'Rough Trade tent signings': 'Rough Trade',
+};
+
+function buildItineraryCard(act, isClash) {
+  const hue = STAGE_HUES[act.stage] || 155;
+  const rating = getRating(act);
+  const isRated = rating !== undefined && rating > 0;
+
+  const card = document.createElement('div');
+  card.className = 'itin-card' + (isClash ? ' clash' : '');
+
+  const rail = document.createElement('div');
+  rail.className = 'itin-rail';
+  rail.style.background = isClash ? 'var(--stamp)' : `oklch(0.55 0.13 ${hue})`;
+  card.appendChild(rail);
+
+  const inner = document.createElement('div');
+  inner.className = 'itin-card-inner';
+
+  inner.appendChild(buildPortrait(act.artist, hue, 52));
+
+  const info = document.createElement('div');
+  info.style.cssText = 'flex:1;min-width:0';
+
+  const metaRow = document.createElement('div');
+  metaRow.className = 'itin-meta';
+  metaRow.innerHTML = `
+    <span class="itin-time">${fmtTime(act.start)}–${fmtTime(act.end)}</span>
+    <span class="itin-stage-pill">${(STAGE_SHORT[act.stage] || act.stage).toUpperCase()}</span>
+    ${isClash ? '<span class="itin-clash-pill">⚠ CLASH</span>' : ''}
+  `;
+  info.appendChild(metaRow);
+
+  const artistDiv = document.createElement('div');
+  artistDiv.className = 'itin-artist';
+  artistDiv.textContent = act.artist;
+  info.appendChild(artistDiv);
+  inner.appendChild(info);
+
+  const starsRow = document.createElement('div');
+  starsRow.style.cssText = 'display:flex;gap:0;align-self:flex-start;padding-top:2px;flex-shrink:0';
+  [1, 2, 3].forEach(n => {
+    const btn = document.createElement('button');
+    btn.className = 'lineup-star-btn';
+    btn.appendChild(buildStarSVG(isRated && n <= rating));
+    btn.addEventListener('click', e => {
+      e.stopPropagation();
+      setRating(act, n);
+      renderItinerary();
+    });
+    starsRow.appendChild(btn);
+  });
+  inner.appendChild(starsRow);
+  card.appendChild(inner);
+  return card;
+}
+
+function renderItinerary() {
+  const container = document.getElementById('picks-list');
+  container.innerHTML = '';
+
+  const allRated = FESTIVAL_DATA.acts.filter(a => {
+    const r = getRating(a); return r !== undefined && r > 0;
+  });
+
+  // Clash detection
+  const clashKeys = new Set();
+  for (let i = 0; i < allRated.length; i++) {
+    for (let j = i + 1; j < allRated.length; j++) {
+      const a = allRated[i], b = allRated[j];
+      if (a.day !== b.day) continue;
+      if (new Date(a.start) < new Date(b.end) && new Date(b.start) < new Date(a.end)) {
+        clashKeys.add(actKey(a)); clashKeys.add(actKey(b));
+      }
+    }
+  }
+
+  // Stat chips
+  const totalMins = allRated.reduce((n, a) => n + (new Date(a.end) - new Date(a.start)) / 60000, 0);
+  const hrs = Math.floor(totalMins / 60);
+  const mins = Math.round(totalMins % 60);
+  const clashPairs = Math.round(clashKeys.size / 2);
+  const chipsEl = document.getElementById('itin-chips');
+  if (chipsEl) {
+    chipsEl.innerHTML = '';
+    [
+      { label: 'Sets', value: allRated.length, warn: false },
+      { label: 'Hours', value: `${hrs}h ${mins}m`, warn: false },
+      { label: 'Clashes', value: clashPairs, warn: clashPairs > 0 },
+    ].forEach(({ label, value, warn }) => {
+      const el = document.createElement('div');
+      el.className = 'itin-chip' + (warn ? ' warn' : '');
+      el.innerHTML = `<div class="itin-chip-label">${label}</div><div class="itin-chip-value">${value}</div>`;
+      chipsEl.appendChild(el);
+    });
+  }
+
+  if (!allRated.length) {
+    const empty = document.createElement('div');
+    empty.className = 'itin-empty';
+    empty.innerHTML = `
+      <div class="itin-empty-title">Your itinerary is empty</div>
+      <div class="itin-empty-sub">Rate any act in the Line-up with one or more stars and it'll show up here.</div>
+    `;
+    container.appendChild(empty);
+    return;
+  }
+
+  const DAY_GROUPS = [
+    { key: '2025-08-14', name: 'Thursday', date: '14 Aug' },
+    { key: '2025-08-15', name: 'Friday', date: '15 Aug' },
+    { key: '2025-08-16', name: 'Saturday', date: '16 Aug' },
+    { key: '2025-08-17', name: 'Sunday', date: '17 Aug' },
+  ];
+
+  DAY_GROUPS.forEach(({ key, name, date }) => {
+    const acts = allRated.filter(a => a.day === key).sort((a, b) => a.start.localeCompare(b.start));
+    if (!acts.length) return;
+
+    const group = document.createElement('div');
+    group.className = 'itin-day-group';
+
+    const dayHdr = document.createElement('div');
+    dayHdr.className = 'itin-day-header';
+    dayHdr.innerHTML = `<span class="itin-day-name">${name}</span><span class="itin-day-date">${date.toUpperCase()}</span>`;
+    group.appendChild(dayHdr);
+
+    const wrap = document.createElement('div');
+    wrap.style.cssText = 'padding:0 16px';
+
+    acts.forEach((act, i) => {
+      if (i > 0) {
+        const gapMin = Math.round((new Date(act.start) - new Date(acts[i - 1].end)) / 60000);
+        if (gapMin > 30) {
+          const gapEl = document.createElement('div');
+          gapEl.className = 'itin-gap';
+          const gH = Math.floor(gapMin / 60), gM = gapMin % 60;
+          gapEl.textContent = `↓ ${gH ? gH + 'h ' : ''}${gM ? gM + 'm' : ''} gap`;
+          wrap.appendChild(gapEl);
+        }
+      }
+      wrap.appendChild(buildItineraryCard(act, clashKeys.has(actKey(act))));
+    });
+
+    group.appendChild(wrap);
+    container.appendChild(group);
+  });
+}
+
+// ══════════════════════════════════════════
+// MY PICKS VIEW (legacy — superseded by renderItinerary)
 // ══════════════════════════════════════════
 function renderPicks() {
   const container = document.getElementById('picks-list');
@@ -1495,7 +1817,7 @@ function switchView(view) {
     b.classList.toggle('active', b.dataset.view === view);
   });
   if (view === 'now')   { carouselIdx = 0; renderNowNext(); }
-  if (view === 'picks') renderPicks();
+  if (view === 'picks') renderItinerary();
 }
 
 document.getElementById('day-tabs').addEventListener('click', e => {
