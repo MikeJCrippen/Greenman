@@ -1195,7 +1195,6 @@
 // !! LAST.FM API KEY — paste your key between the quotes
 // Get a free key at: https://www.last.fm/api/account/create
 // ══════════════════════════════════════════════════════
-const LASTFM_API_KEY = '5bb7a90bcb0461b004fa7ed6ec211b73';
 // ══════════════════════════════════════════════════════
 
 // ── Dev mode: simulates being at the festival ─────────
@@ -1224,7 +1223,7 @@ const FESTIVAL_DATA = {"festival":"Green Man Festival 2025","dates":{"thursday":
 // STATE
 // ══════════════════════════════════════════
 const STORAGE_KEY    = 'gm2025_ratings';
-const PHOTO_CACHE_KEY = 'gm2025_photos';
+const PHOTO_CACHE_KEY = 'gm2026_photos';
 let ratings    = {};
 let photoCache = {};
 let activeDay  = '2025-08-14';
@@ -1236,13 +1235,7 @@ const NOW_NEXT_STAGES = ['Mountain Stage', 'Far Out', 'Walled Garden'];
 
 function loadState() {
   try { ratings    = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}'); } catch(e) { ratings = {}; }
-  try {
-    const stored = JSON.parse(localStorage.getItem(PHOTO_CACHE_KEY) || '{}');
-    // Wipe cache if it contains Last.fm placeholder URLs from before the fix
-    const hasPlaceholders = Object.values(stored).some(v => v && v.includes('2a96cbd8b46e442fc41c2b86b821562f'));
-    photoCache = hasPlaceholders ? {} : stored;
-    if (hasPlaceholders) savePhotoCache();
-  } catch(e) { photoCache = {}; }
+  try { photoCache = JSON.parse(localStorage.getItem(PHOTO_CACHE_KEY) || '{}'); } catch(e) { photoCache = {}; }
 }
 
 function saveRatings()    { localStorage.setItem(STORAGE_KEY, JSON.stringify(ratings)); }
@@ -1264,25 +1257,30 @@ function setRating(act, r) {
 }
 
 // ══════════════════════════════════════════
-// LAST.FM PHOTO FETCH
+// ARTIST PHOTO FETCH — AudioDB → Wikipedia
 // ══════════════════════════════════════════
 async function fetchArtistPhoto(artist) {
-  if (!LASTFM_API_KEY) return;                    // no key yet, skip
   if (photoCache[artist] !== undefined) return;   // already fetched (even if null)
 
   try {
-    const url = `https://ws.audioscrobbler.com/2.0/?method=artist.getinfo&artist=${encodeURIComponent(artist)}&api_key=${LASTFM_API_KEY}&format=json`;
-    const res  = await fetch(url);
-    const data = await res.json();
-    const images = data?.artist?.image;
-    // Last.fm returns array of sizes; grab 'extralarge' or 'large'
-    const img = images?.find(i => i.size === 'extralarge') || images?.find(i => i.size === 'large');
-    const src = img?.['#text'] || null;
-    // Last.fm returns a generic placeholder for artists with no image — filter it out
-    const isPlaceholder = src && src.includes('2a96cbd8b46e442fc41c2b86b821562f');
-    photoCache[artist] = (src && src.length > 10 && !isPlaceholder) ? src : null;
+    // 1. TheAudioDB (free, music-focused, no key needed for personal use)
+    const adbRes  = await fetch(`https://www.theaudiodb.com/api/v1/json/1/search.php?s=${encodeURIComponent(artist)}`);
+    const adbData = await adbRes.json();
+    const thumb   = adbData?.artists?.[0]?.strArtistThumb;
+    if (thumb) {
+      photoCache[artist] = thumb;
+      savePhotoCache();
+      updateCardPhoto();
+      return;
+    }
+
+    // 2. Wikipedia fallback
+    const wikiRes  = await fetch(`https://en.wikipedia.org/w/api.php?action=query&titles=${encodeURIComponent(artist)}&prop=pageimages&format=json&pithumbsize=300&origin=*`);
+    const wikiData = await wikiRes.json();
+    const pages    = wikiData?.query?.pages;
+    const src      = pages && Object.values(pages)[0]?.thumbnail?.source;
+    photoCache[artist] = src || null;
     savePhotoCache();
-    // Update any visible cards for this artist
     updateCardPhoto();
   } catch(e) {
     photoCache[artist] = null;
