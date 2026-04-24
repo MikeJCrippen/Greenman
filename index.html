@@ -1076,11 +1076,6 @@
     <div class="browse-eyebrow">GREEN MAN · 14–17 AUG 2025</div>
     <div class="browse-titlerow">
       <h1 class="browse-h1">Line-up</h1>
-      <button class="browse-search-btn" aria-label="Search">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-          <circle cx="11" cy="11" r="7"/><path d="M21 21l-4.35-4.35"/>
-        </svg>
-      </button>
     </div>
     <div class="day-tabs" id="day-tabs">
       <button class="day-tab active" data-day="2025-08-14">
@@ -1147,12 +1142,6 @@
     <div class="itin-eyebrow">MY PLAN</div>
     <div class="itin-titlerow">
       <h1 class="itin-h1">Itinerary</h1>
-      <button class="itin-share-btn" aria-label="Share">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-          <path d="M4 12v7a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-7"/>
-          <path d="M16 6l-4-4-4 4"/><path d="M12 2v13"/>
-        </svg>
-      </button>
     </div>
     <div class="itin-chips" id="itin-chips"></div>
   </div>
@@ -1287,7 +1276,7 @@ async function fetchArtistPhoto(artist) {
     photoCache[artist] = (src && src.length > 10) ? src : null;
     savePhotoCache();
     // Update any visible cards for this artist
-    updateCardPhoto(artist);
+    updateCardPhoto();
   } catch(e) {
     photoCache[artist] = null;
     savePhotoCache();
@@ -1298,22 +1287,11 @@ function getPhoto(artist) {
   return photoCache[artist] || null;
 }
 
-function updateCardPhoto(artist) {
-  // Update browse cards
-  document.querySelectorAll('.act-card').forEach(card => {
-    if (card.dataset.artist === artist) {
-      applyCardPhoto(card, artist);
-    }
-  });
-}
-
-function applyCardPhoto(card, artist) {
-  const photo = getPhoto(artist);
-  const bg = card.querySelector('.act-card-bg');
-  if (photo && bg) {
-    bg.style.backgroundImage = `url('${photo}')`;
-    bg.style.background = '';
-  }
+function updateCardPhoto() {
+  // Re-render the active view so portraits and hero backgrounds pick up new photos.
+  if (currentView === 'browse') renderLineup();
+  else if (currentView === 'now') renderNowNext();
+  else if (currentView === 'picks') renderItinerary();
 }
 
 // ══════════════════════════════════════════
@@ -1360,30 +1338,40 @@ const STAGE_HUES = {
 
 function buildPortrait(artist, hue, size) {
   size = size || 44;
-  const initials = artist.split(' ').filter(w => w).slice(0, 2).map(w => w[0]).join('').toUpperCase();
-  const h2 = (hue + 35) % 360;
   const uid = 'p' + Math.random().toString(36).slice(2, 8);
   const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
   svg.setAttribute('width', size);
   svg.setAttribute('height', size);
   svg.setAttribute('viewBox', '0 0 100 100');
   svg.classList.add('lineup-portrait');
-  svg.innerHTML = `
-    <defs>
-      <clipPath id="${uid}c"><path d="M 50 2 C 74 2 94 18 96 44 C 98 68 86 92 60 96 C 38 99 12 90 6 66 C 0 42 10 12 50 2 Z"/></clipPath>
-      <linearGradient id="${uid}g" x1="0" y1="0" x2="1" y2="1">
-        <stop offset="0" stop-color="oklch(0.72 0.14 ${hue})"/>
-        <stop offset="1" stop-color="oklch(0.42 0.12 ${h2})"/>
-      </linearGradient>
-    </defs>
-    <g clip-path="url(#${uid}c)">
-      <rect width="100" height="100" fill="url(#${uid}g)"/>
-      <circle cx="30" cy="35" r="22" fill="rgba(255,255,255,.08)"/>
-      <circle cx="75" cy="70" r="30" fill="rgba(0,0,0,.14)"/>
-      <text x="50" y="58" text-anchor="middle" font-family="Fraunces, Georgia, serif" font-size="28" fill="rgba(255,255,255,.9)" letter-spacing="1">${initials}</text>
-    </g>
-    <path d="M 50 2 C 74 2 94 18 96 44 C 98 68 86 92 60 96 C 38 99 12 90 6 66 C 0 42 10 12 50 2 Z" fill="none" stroke="rgba(42,34,64,0.35)" stroke-width="1.2"/>
-  `;
+  const blobPath = 'M 50 2 C 74 2 94 18 96 44 C 98 68 86 92 60 96 C 38 99 12 90 6 66 C 0 42 10 12 50 2 Z';
+  const photo = getPhoto(artist);
+  if (photo) {
+    svg.innerHTML = `
+      <defs><clipPath id="${uid}c"><path d="${blobPath}"/></clipPath></defs>
+      <image href="${photo}" x="0" y="0" width="100" height="100" clip-path="url(#${uid}c)" preserveAspectRatio="xMidYMid slice"/>
+      <path d="${blobPath}" fill="none" stroke="rgba(42,34,64,0.35)" stroke-width="1.2"/>
+    `;
+  } else {
+    const initials = artist.split(' ').filter(w => w).slice(0, 2).map(w => w[0]).join('').toUpperCase();
+    const h2 = (hue + 35) % 360;
+    svg.innerHTML = `
+      <defs>
+        <clipPath id="${uid}c"><path d="${blobPath}"/></clipPath>
+        <linearGradient id="${uid}g" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stop-color="oklch(0.72 0.14 ${hue})"/>
+          <stop offset="1" stop-color="oklch(0.42 0.12 ${h2})"/>
+        </linearGradient>
+      </defs>
+      <g clip-path="url(#${uid}c)">
+        <rect width="100" height="100" fill="url(#${uid}g)"/>
+        <circle cx="30" cy="35" r="22" fill="rgba(255,255,255,.08)"/>
+        <circle cx="75" cy="70" r="30" fill="rgba(0,0,0,.14)"/>
+        <text x="50" y="58" text-anchor="middle" font-family="Fraunces, Georgia, serif" font-size="28" fill="rgba(255,255,255,.9)" letter-spacing="1">${initials}</text>
+      </g>
+      <path d="${blobPath}" fill="none" stroke="rgba(42,34,64,0.35)" stroke-width="1.2"/>
+    `;
+  }
   return svg;
 }
 
@@ -1753,7 +1741,14 @@ function buildNowHeroCard(act, stageName, nowMs) {
 
   const bg = document.createElement('div');
   bg.className = 'now-hero-bg';
-  bg.style.background = `linear-gradient(160deg, oklch(0.45 0.11 ${hue}), oklch(0.22 0.06 155))`;
+  const heroPhoto = getPhoto(act.artist);
+  if (heroPhoto) {
+    bg.style.backgroundImage = `url('${heroPhoto}')`;
+    bg.style.backgroundSize = 'cover';
+    bg.style.backgroundPosition = 'center top';
+  } else {
+    bg.style.background = `linear-gradient(160deg, oklch(0.45 0.11 ${hue}), oklch(0.22 0.06 155))`;
+  }
   card.appendChild(bg);
 
   const pw = document.createElement('div');
