@@ -1272,24 +1272,15 @@ function setRating(act, r) {
 }
 
 // ══════════════════════════════════════════
-// ARTIST PHOTO FETCH — AudioDB → iTunes → Wikipedia
-// ════════════════════════════════════════════════════
+// ARTIST PHOTO FETCH — iTunes → Wikipedia
+// ════════════════════════════════════════
 async function fetchArtistPhoto(artist) {
   if (photoCache[artist] !== undefined) return;   // already fetched (even if null)
 
   let photo = null;
   const q = encodeURIComponent(artist);
 
-  // 1. TheAudioDB — music-focused, free, no key needed
-  if (!photo) try {
-    const res = await fetch(`https://www.theaudiodb.com/api/v1/json/1/search.php?s=${q}`);
-    if (res.ok) {
-      const data = await res.json();
-      photo = data?.artists?.[0]?.strArtistThumb || null;
-    }
-  } catch(e) {}
-
-  // 2. iTunes — professional album artwork, CORS-friendly
+  // 1. iTunes — professional album artwork, CORS-friendly
   if (!photo) try {
     const res = await fetch(`https://itunes.apple.com/search?term=${q}&entity=musicTrack&limit=1`);
     if (res.ok) {
@@ -2157,6 +2148,12 @@ setInterval(() => { if (currentView === 'now') renderNowNext(); }, 60000);
 // ══════════════════════════════════════════
 // INIT
 // ══════════════════════════════════════════
+if (new URLSearchParams(location.search).has('reset')) {
+  localStorage.removeItem(STORAGE_KEY);
+  localStorage.removeItem(PHOTO_CACHE_KEY);
+  location.replace(location.pathname);
+}
+
 loadState();
 initCarouselSwipe();
 renderLineup();
