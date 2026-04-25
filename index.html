@@ -1272,37 +1272,44 @@ function setRating(act, r) {
 }
 
 // ══════════════════════════════════════════
-// ARTIST PHOTO FETCH — AudioDB → Wikipedia
-// ══════════════════════════════════════════
+// ARTIST PHOTO FETCH — AudioDB → Deezer → Wikipedia
+// ════════════════════════════════════════════════════
 async function fetchArtistPhoto(artist) {
   if (photoCache[artist] !== undefined) return;   // already fetched (even if null)
 
-  try {
-    // 1. TheAudioDB (free, music-focused, no key needed for personal use)
-    const adbRes = await fetch(`https://www.theaudiodb.com/api/v1/json/1/search.php?s=${encodeURIComponent(artist)}`);
-    if (adbRes.ok) {
-      const adbData = await adbRes.json();
-      const thumb   = adbData?.artists?.[0]?.strArtistThumb;
-      if (thumb) {
-        photoCache[artist] = thumb;
-        savePhotoCache();
-        updateCardPhoto();
-        return;
-      }
-    }
+  let photo = null;
+  const q = encodeURIComponent(artist);
 
-    // 2. Wikipedia fallback
-    const wikiRes  = await fetch(`https://en.wikipedia.org/w/api.php?action=query&titles=${encodeURIComponent(artist)}&prop=pageimages&format=json&pithumbsize=300&origin=*`);
-    const wikiData = await wikiRes.json();
-    const pages    = wikiData?.query?.pages;
-    const src      = pages && Object.values(pages)[0]?.thumbnail?.source;
-    photoCache[artist] = src || null;
-    savePhotoCache();
-    updateCardPhoto();
-  } catch(e) {
-    photoCache[artist] = null;
-    savePhotoCache();
-  }
+  // 1. TheAudioDB — music-focused, free, no key needed
+  if (!photo) try {
+    const res = await fetch(`https://www.theaudiodb.com/api/v1/json/1/search.php?s=${q}`);
+    if (res.ok) {
+      const data = await res.json();
+      photo = data?.artists?.[0]?.strArtistThumb || null;
+    }
+  } catch(e) {}
+
+  // 2. Deezer — pro artist portraits, free public API
+  if (!photo) try {
+    const res = await fetch(`https://api.deezer.com/search/artist?q=${q}&limit=1`);
+    if (res.ok) {
+      const data = await res.json();
+      const pic = data?.data?.[0]?.picture_xl;
+      if (pic && !pic.includes('noimage')) photo = pic;
+    }
+  } catch(e) {}
+
+  // 3. Wikipedia — broad coverage fallback
+  if (!photo) try {
+    const res = await fetch(`https://en.wikipedia.org/w/api.php?action=query&titles=${q}&prop=pageimages&format=json&pithumbsize=400&origin=*`);
+    const data = await res.json();
+    const pages = data?.query?.pages;
+    photo = (pages && Object.values(pages)[0]?.thumbnail?.source) || null;
+  } catch(e) {}
+
+  photoCache[artist] = photo;
+  savePhotoCache();
+  updateCardPhoto();
 }
 
 function getPhoto(artist) {
