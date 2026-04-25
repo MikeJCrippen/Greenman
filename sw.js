@@ -1,5 +1,5 @@
 // Green Man 2026 PWA service worker — offline-first for the companion app.
-const CACHE = 'gm2026-v3';
+const CACHE = 'gm2026-v4';
 const ASSETS = [
   './',
   './index.html',
