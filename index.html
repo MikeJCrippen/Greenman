@@ -6,6 +6,7 @@
 <title>Green Man 2026</title>
 <link rel="manifest" href="./manifest.json">
 <meta name="theme-color" content="#2f5a44">
+<meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Green Man">
@@ -1243,10 +1244,11 @@ function savePhotoCache() { localStorage.setItem(PHOTO_CACHE_KEY, JSON.stringify
 
 // Debug helpers — call from browser console
 function resetPhotos() {
-  photoCache = {};
+  // Clear only failed (null) entries so successful photos aren't lost
+  Object.keys(photoCache).forEach(k => { if (photoCache[k] === null) delete photoCache[k]; });
   savePhotoCache();
   updateCardPhoto();
-  console.log('Photo cache cleared — rate an act to re-fetch.');
+  console.log('Cleared failed photo cache entries — rate an act to re-fetch.');
 }
 function resetAll() {
   localStorage.removeItem(STORAGE_KEY);
@@ -1277,14 +1279,16 @@ async function fetchArtistPhoto(artist) {
 
   try {
     // 1. TheAudioDB (free, music-focused, no key needed for personal use)
-    const adbRes  = await fetch(`https://www.theaudiodb.com/api/v1/json/1/search.php?s=${encodeURIComponent(artist)}`);
-    const adbData = await adbRes.json();
-    const thumb   = adbData?.artists?.[0]?.strArtistThumb;
-    if (thumb) {
-      photoCache[artist] = thumb;
-      savePhotoCache();
-      updateCardPhoto();
-      return;
+    const adbRes = await fetch(`https://www.theaudiodb.com/api/v1/json/1/search.php?s=${encodeURIComponent(artist)}`);
+    if (adbRes.ok) {
+      const adbData = await adbRes.json();
+      const thumb   = adbData?.artists?.[0]?.strArtistThumb;
+      if (thumb) {
+        photoCache[artist] = thumb;
+        savePhotoCache();
+        updateCardPhoto();
+        return;
+      }
     }
 
     // 2. Wikipedia fallback
