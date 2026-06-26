@@ -1079,21 +1079,21 @@
       <h1 class="browse-h1">Line-up</h1>
     </div>
     <div class="day-tabs" id="day-tabs">
-      <button class="day-tab active" data-day="2025-08-14">
+      <button class="day-tab active" data-day="2026-08-20">
         <span class="day-tab-label">THU</span>
-        <span class="day-tab-date">14</span>
+        <span class="day-tab-date">20</span>
       </button>
-      <button class="day-tab" data-day="2025-08-15">
+      <button class="day-tab" data-day="2026-08-21">
         <span class="day-tab-label">FRI</span>
-        <span class="day-tab-date">15</span>
+        <span class="day-tab-date">21</span>
       </button>
-      <button class="day-tab" data-day="2025-08-16">
+      <button class="day-tab" data-day="2026-08-22">
         <span class="day-tab-label">SAT</span>
-        <span class="day-tab-date">16</span>
+        <span class="day-tab-date">22</span>
       </button>
-      <button class="day-tab" data-day="2025-08-17">
+      <button class="day-tab" data-day="2026-08-23">
         <span class="day-tab-label">SUN</span>
-        <span class="day-tab-date">17</span>
+        <span class="day-tab-date">23</span>
       </button>
     </div>
   </div>
@@ -1227,7 +1227,7 @@ const STORAGE_KEY    = 'gm2026_ratings';
 const PHOTO_CACHE_KEY = 'gm2026_photos';
 let ratings    = {};
 let photoCache = {};
-let activeDay  = '2025-08-14';
+let activeDay  = FESTIVAL_DATA.dates.thursday;
 let activeStage = 'all';
 let currentView = 'browse';
 let carouselIdx = 0;
@@ -1508,8 +1508,8 @@ function renderLineup() {
   });
 
   const DAY_LABELS = {
-    '2025-08-14': 'Thu 14 Aug', '2025-08-15': 'Fri 15 Aug',
-    '2025-08-16': 'Sat 16 Aug', '2025-08-17': 'Sun 17 Aug',
+    '2026-08-20': 'Thu 20 Aug', '2026-08-21': 'Fri 21 Aug',
+    '2026-08-22': 'Sat 22 Aug', '2026-08-23': 'Sun 23 Aug',
   };
   const eod = document.createElement('div');
   eod.className = 'end-of-day';
@@ -2016,10 +2016,10 @@ function renderItinerary() {
   }
 
   const DAY_GROUPS = [
-    { key: '2025-08-14', name: 'Thursday', date: '14 Aug' },
-    { key: '2025-08-15', name: 'Friday', date: '15 Aug' },
-    { key: '2025-08-16', name: 'Saturday', date: '16 Aug' },
-    { key: '2025-08-17', name: 'Sunday', date: '17 Aug' },
+    { key: '2026-08-20', name: 'Thursday', date: '20 Aug' },
+    { key: '2026-08-21', name: 'Friday', date: '21 Aug' },
+    { key: '2026-08-22', name: 'Saturday', date: '22 Aug' },
+    { key: '2026-08-23', name: 'Sunday', date: '23 Aug' },
   ];
 
   DAY_GROUPS.forEach(({ key, name, date }) => {
@@ -2064,10 +2064,10 @@ function renderPicks() {
   container.innerHTML = '';
 
   const days = [
-    { key: '2025-08-14', label: 'Thursday 14th' },
-    { key: '2025-08-15', label: 'Friday 15th' },
-    { key: '2025-08-16', label: 'Saturday 16th' },
-    { key: '2025-08-17', label: 'Sunday 17th' },
+    { key: '2026-08-20', label: 'Thursday 20th' },
+    { key: '2026-08-21', label: 'Friday 21st' },
+    { key: '2026-08-22', label: 'Saturday 22nd' },
+    { key: '2026-08-23', label: 'Sunday 23rd' },
   ];
 
   let anyPicks = false;
